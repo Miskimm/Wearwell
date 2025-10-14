@@ -250,10 +250,10 @@ function submitSchedule() {
         // show success message
         showNotification('Invitation sent!', 'success');
         
-        // show confirmation modal with Go to Map option
+        // navigate to match page after delay
         setTimeout(() => {
-            showScheduleConfirmation();
-        }, 1000);
+            navigateToPage('match');
+        }, 2000);
     }, 1500);
 }
 
@@ -283,11 +283,15 @@ function showScheduleConfirmation() {
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" onclick="goToMapFromSchedule()">
+                <button class="btn btn-primary" onclick="startRunning()">
+                    <i data-lucide="play" class="icon"></i>
+                    Start Running!
+                </button>
+                <button class="btn btn-outline" onclick="goToMapFromSchedule()">
                     <i data-lucide="map" class="icon"></i>
                     Go to Map
                 </button>
-                <button class="btn btn-outline" onclick="closeModal(this)">
+                <button class="btn btn-ghost" onclick="closeModal(this)">
                     <i data-lucide="x" class="icon"></i>
                     Close
                 </button>
@@ -307,6 +311,25 @@ function showScheduleConfirmation() {
     setTimeout(() => {
         modal.classList.add('show');
     }, 100);
+}
+
+// start running function
+function startRunning() {
+    console.log('Start Running! button clicked');
+    
+    // close modal
+    const modal = document.querySelector('.modal-overlay');
+    if (modal) {
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.remove();
+        }, 300);
+    }
+    
+    // redirect to match page (common goal page)
+    setTimeout(() => {
+        navigateToPage('match');
+    }, 300);
 }
 
 // go to map from schedule
@@ -469,4 +492,5 @@ window.submitSchedule = submitSchedule;
 window.previewSchedule = previewSchedule;
 window.clearForm = clearForm;
 window.closeModal = closeModal;
+window.startRunning = startRunning;
 window.goToMapFromSchedule = goToMapFromSchedule;

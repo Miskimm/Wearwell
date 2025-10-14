@@ -35,6 +35,7 @@ function loadMatchData() {
     
     if (runner) {
         updateMatchInfo(runner);
+        // no modal needed - user can click Start Running! button directly
     } else {
         showError(document.querySelector('.main-content'), 'Runner data not found');
     }
@@ -245,6 +246,89 @@ function showMatchHistoryModal() {
     }, 100);
 }
 
+// show match success modal
+function showMatchSuccessModal(runner) {
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="success-icon">
+                    <i data-lucide="check-circle" class="icon"></i>
+                </div>
+                <h3>Match Successful!</h3>
+                <p>You've successfully matched with <strong>${runner.name}</strong>!</p>
+            </div>
+            <div class="modal-body">
+                <div class="confirmation-details">
+                    <div class="detail-item">
+                        <i data-lucide="calendar" class="icon"></i>
+                        <span>Run scheduled and saved to calendar</span>
+                    </div>
+                    <div class="detail-item">
+                        <i data-lucide="bell" class="icon"></i>
+                        <span>You'll be notified before the run</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="startRunningFromMatch()">
+                    <i data-lucide="play" class="icon"></i>
+                    Start Running!
+                </button>
+                <button class="btn btn-outline" onclick="goToMapFromMatch()">
+                    <i data-lucide="map" class="icon"></i>
+                    Go to Map
+                </button>
+                <button class="btn btn-ghost" onclick="closeModal(this)">
+                    <i data-lucide="x" class="icon"></i>
+                    Close
+                </button>
+            </div>
+        </div>
+    `;
+    
+    // add to page
+    document.body.appendChild(modal);
+    
+    // init icons
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+    
+    // show modal
+    setTimeout(() => {
+        modal.classList.add('show');
+    }, 100);
+}
+
+// start running from match
+function startRunningFromMatch() {
+    console.log('Start Running! from match clicked');
+    
+    // redirect to shared goal page
+    navigateToPage('shared-goal');
+}
+
+// go to map from match
+function goToMapFromMatch() {
+    console.log('Go to Map from match clicked');
+    
+    // close modal
+    const modal = document.querySelector('.modal-overlay');
+    if (modal) {
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.remove();
+        }, 300);
+    }
+    
+    // redirect to map (index page)
+    setTimeout(() => {
+        navigateToPage('index');
+    }, 300);
+}
+
 // export global functions
 window.scheduleRun = scheduleRun;
 window.sendMessage = sendMessage;
@@ -253,3 +337,5 @@ window.cancelMatch = cancelMatch;
 window.shareMatch = shareMatch;
 window.viewMatchHistory = viewMatchHistory;
 window.closeModal = closeModal;
+window.startRunningFromMatch = startRunningFromMatch;
+window.goToMapFromMatch = goToMapFromMatch;

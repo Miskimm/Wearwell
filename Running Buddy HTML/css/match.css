@@ -472,3 +472,87 @@
     transform: none;
   }
 }
+
+/* match success modal styles */
+.success-icon {
+  width: 4rem;
+  height: 4rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--spacing-4);
+}
+
+.success-icon .icon {
+  width: 2rem;
+  height: 2rem;
+  color: white;
+}
+
+.confirmation-details {
+  margin-top: var(--spacing-4);
+}
+
+.confirmation-details .detail-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+  background: var(--muted);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-3);
+}
+
+.confirmation-details .detail-item .icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--primary-color);
+}
+
+.confirmation-details .detail-item span {
+  font-size: var(--text-sm);
+  color: var(--foreground);
+}
+
+/* modal footer with three buttons */
+.modal-footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-6);
+}
+
+.modal-footer .btn {
+  width: 100%;
+  justify-content: center;
+}
+
+.modal-footer .btn:first-child {
+  order: 1;
+}
+
+.modal-footer .btn:nth-child(2) {
+  order: 2;
+}
+
+.modal-footer .btn:last-child {
+  order: 3;
+}
+
+/* responsive button layout */
+@media (min-width: 480px) {
+  .modal-footer {
+    flex-direction: row;
+    gap: var(--spacing-2);
+  }
+  
+  .modal-footer .btn {
+    flex: 1;
+  }
+  
+  .modal-footer .btn:first-child {
+    flex: 2;
+  }
+}

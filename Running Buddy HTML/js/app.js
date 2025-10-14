@@ -34,7 +34,8 @@ function updatePageTitle() {
         'runners': 'Nearby Runners - Running Buddy',
         'profile': 'Runner Profile - Running Buddy',
         'match': 'Match Confirmation - Running Buddy',
-        'schedule': 'Schedule Run - Running Buddy'
+        'schedule': 'Schedule Run - Running Buddy',
+        'shared-goal': 'Shared Goal - Running Buddy'
     };
     
     document.title = titles[currentPage] || 'Running Buddy';
@@ -95,7 +96,8 @@ function navigateToPage(page) {
         'runners': 'runners.html',
         'profile': 'profile.html',
         'match': 'match.html',
-        'schedule': 'schedule.html'
+        'schedule': 'schedule.html',
+        'shared-goal': 'shared-goal.html'
     };
     
     const targetPage = pages[page];

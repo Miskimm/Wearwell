@@ -700,7 +700,7 @@ function showWaitingPage(runnerName) {
         modal.classList.add('show');
     }, 100);
     
-    // auto redirect to schedule after 0.7 seconds
+    // auto redirect to schedule after 2 seconds (give user time to read)
     setTimeout(() => {
         // close waiting modal
         modal.classList.remove('show');
@@ -716,7 +716,7 @@ function showWaitingPage(runnerName) {
         
         // redirect to schedule page
         navigateToPage('schedule');
-    }, 700);
+    }, 2000);
 }
 
 // go to map

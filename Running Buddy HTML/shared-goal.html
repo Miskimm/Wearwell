@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Shared Goal - Running Buddy</title>
+    <meta name="description" content="Track your shared running goals and challenges with your running buddy">
+    
+    <!-- PWA -->
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Running Buddy">
+    <link rel="manifest" href="pwa_files/manifest.json">
+    <link rel="apple-touch-icon" href="assets/icon-192.png">
+    
+    <!-- global styles -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/shared-goal.css">
+    
+    <!-- icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- header -->
+        <header class="header">
+            <div class="header-content">
+                <button class="back-btn" onclick="goBack()">
+                    <i data-lucide="arrow-left" class="icon"></i>
+                </button>
+                <div class="header-info">
+                    <h1 class="header-title">Shared Goal</h1>
+                    <p class="header-subtitle">Track your progress together</p>
+                </div>
+                <div class="header-icon">
+                    <button class="profile-btn" onclick="window.location.href='profile.html'" title="Profile">
+                        <i data-lucide="user" class="icon"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- main content -->
+        <main class="main-content">
+            <!-- shared goal banner -->
+            <div class="shared-goal-banner">
+                <h2>Your Shared Goal</h2>
+            </div>
+
+            <!-- today's activity -->
+            <div class="activity-card">
+                <h3>Today! Calories Burned</h3>
+                <div class="activity-stats">
+                    <div class="stat-item">
+                        <span class="stat-value" id="calories-burned">1800</span>
+                        <span class="stat-unit">kcal</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="distance-covered">3508</span>
+                        <span class="stat-unit">m</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- common goal progress -->
+            <div class="goal-progress-card">
+                <h3>Set your common goal</h3>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 80%"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span class="progress-percentage">80%</span>
+                        <span class="progress-target">to your goal</span>
+                    </div>
+                    <div class="goal-target">
+                        <span id="goal-target">2250</span> kcal
+                    </div>
+                </div>
+                <p class="next-goal">Next Goal</p>
+            </div>
+
+            <!-- challenge section -->
+            <div class="challenge-card">
+                <h3>Challenge</h3>
+                <div class="challenge-content">
+                    <div class="challenge-text">
+                        <p class="challenge-description">Run 10 km together this weekend</p>
+                        <p class="challenge-reward">Earn a badge for completing this challenge</p>
+                    </div>
+                    <div class="challenge-actions">
+                        <button class="challenge-btn">
+                            <i data-lucide="play" class="icon"></i>
+                            Start
+                        </button>
+                        <div class="challenge-icon">
+                            <i data-lucide="trophy" class="icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- running buddy info -->
+            <div class="buddy-info-card">
+                <h3>Your Running Buddy</h3>
+                <div class="buddy-profile">
+                    <div class="buddy-avatar">
+                        <img src="assets/sarah.png" alt="Running Buddy" class="avatar-img" id="buddy-avatar">
+                    </div>
+                    <div class="buddy-details">
+                        <h4 class="buddy-name" id="buddy-name">Sarah Chen</h4>
+                        <div class="buddy-stats">
+                            <div class="buddy-stat">
+                                <i data-lucide="target" class="icon"></i>
+                                <span id="buddy-pace">5:30 min/km</span>
+                            </div>
+                            <div class="buddy-stat">
+                                <i data-lucide="play" class="icon"></i>
+                                <span id="buddy-frequency">4 runs/week</span>
+                            </div>
+                        </div>
+                        <div class="buddy-status">
+                            <span class="status-badge confirmed">Confirmed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- action buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="endRun()">
+                    <i data-lucide="stop" class="icon"></i>
+                    End Run
+                </button>
+                <button class="btn btn-outline" onclick="goToMap()">
+                    <i data-lucide="map" class="icon"></i>
+                    Go to Map
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/shared-goal.js"></script>
+</body>
+</html>
