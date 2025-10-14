@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Runner Profile - Running Buddy</title>
+    <meta name="description" content="View runner's detailed profile and running statistics">
+    
+    <!-- global styles -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/profile.css">
+    
+    <!-- icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- header -->
+        <header class="header">
+            <div class="header-content">
+                <button class="back-btn" onclick="goBack()">
+                    <i data-lucide="arrow-left" class="icon"></i>
+                </button>
+                <div class="header-info">
+                    <h1 class="header-title">Runner Profile</h1>
+                </div>
+            </div>
+        </header>
+
+        <!-- main content -->
+        <main class="main-content">
+            <!-- runner info card -->
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <img src="assets/profile.png" 
+                             alt="LAN BELL" class="avatar-img" id="profile-avatar">
+                    </div>
+                    <div class="profile-info">
+                        <h2 class="profile-name" id="profile-name">LAN BELL</h2>
+                        <div class="profile-level" id="profile-level">
+                            <span class="level-badge badge badge-success">Intermediate Runner</span>
+                        </div>
+                        <div class="profile-location">
+                            <i data-lucide="map-pin" class="icon"></i>
+                            <span id="profile-distance">200m away</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="profile-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i data-lucide="target" class="icon"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="profile-pace">5:30</div>
+                            <div class="stat-label">Average 5km Pace</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i data-lucide="play" class="icon"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="profile-runs">3</div>
+                            <div class="stat-label">Runs per Week</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i data-lucide="clock" class="icon"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="profile-activity">Yesterday</div>
+                            <div class="stat-label">Last Activity</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- activity stats -->
+            <div class="activity-stats-section">
+                <h3 class="section-title">Activity Stats</h3>
+                <div class="activity-stats-grid">
+                    <div class="activity-stat-card">
+                        <div class="activity-stat-label">Total Runs</div>
+                        <div class="activity-stat-value">256</div>
+                    </div>
+                    
+                    <div class="activity-stat-card">
+                        <div class="activity-stat-label">Total Distance</div>
+                        <div class="activity-stat-value">200km</div>
+                    </div>
+                    
+                    <div class="activity-stat-card full-width">
+                        <div class="activity-stat-label">Best 5km Pace</div>
+                        <div class="activity-stat-value">4:23 min/km</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- recent activity -->
+            <div class="recent-activity-section">
+                <h3 class="section-title">Recent Activity</h3>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-time">Ran 2 days ago</div>
+                        <div class="activity-detail">5km Run</div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-time">5 days ago</div>
+                        <div class="activity-detail">3km Run</div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-time">1 week ago</div>
+                        <div class="activity-detail">10km Run</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- running preferences -->
+            <div class="preferences-section">
+                <h3 class="section-title">Running Preferences</h3>
+                <div class="preferences-grid">
+                    <div class="preference-item">
+                        <div class="preference-icon">
+                            <i data-lucide="sunrise" class="icon"></i>
+                        </div>
+                        <div class="preference-content">
+                            <div class="preference-label">Best Time</div>
+                            <div class="preference-value">Morning 6:00-8:00</div>
+                        </div>
+                    </div>
+                    
+                    <div class="preference-item">
+                        <div class="preference-icon">
+                            <i data-lucide="route" class="icon"></i>
+                        </div>
+                        <div class="preference-content">
+                            <div class="preference-label">Running Distance</div>
+                            <div class="preference-value">5-10km</div>
+                        </div>
+                    </div>
+                    
+                    <div class="preference-item">
+                        <div class="preference-icon">
+                            <i data-lucide="calendar" class="icon"></i>
+                        </div>
+                        <div class="preference-content">
+                            <div class="preference-label">Running Frequency</div>
+                            <div class="preference-value">4 times/week</div>
+                        </div>
+                    </div>
+                    
+                    <div class="preference-item">
+                        <div class="preference-icon">
+                            <i data-lucide="users" class="icon"></i>
+                        </div>
+                        <div class="preference-content">
+                            <div class="preference-label">Running Partners</div>
+                            <div class="preference-value">1-2 people</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- running achievements -->
+            <div class="achievements-section">
+                <h3 class="section-title">Running Achievements</h3>
+                <div class="achievements-grid">
+                    <div class="achievement-item">
+                        <div class="achievement-icon">
+                            <i data-lucide="trophy" class="icon"></i>
+                        </div>
+                        <div class="achievement-content">
+                            <div class="achievement-title">Running Streak</div>
+                            <div class="achievement-desc">30 consecutive days</div>
+                        </div>
+                    </div>
+                    
+                    <div class="achievement-item">
+                        <div class="achievement-icon">
+                            <i data-lucide="zap" class="icon"></i>
+                        </div>
+                        <div class="achievement-content">
+                            <div class="achievement-title">Speed Improvement</div>
+                            <div class="achievement-desc">Pace improved by 30s</div>
+                        </div>
+                    </div>
+                    
+                    <div class="achievement-item">
+                        <div class="achievement-icon">
+                            <i data-lucide="map" class="icon"></i>
+                        </div>
+                        <div class="achievement-content">
+                            <div class="achievement-title">Distance Challenge</div>
+                            <div class="achievement-desc">Single run 15km</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- recent activities -->
+            <div class="activity-section">
+                <h3 class="section-title">Recent Activity</h3>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-date">Today</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Morning Run 5km</div>
+                            <div class="activity-details">Pace 5:30 min/km</div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-date">Yesterday</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Long Run 8km</div>
+                            <div class="activity-details">Pace 5:45 min/km</div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-date">3 days ago</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Interval Run 6km</div>
+                            <div class="activity-details">Pace 5:15 min/km</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- action buttons -->
+            <div class="action-section">
+                <button class="action-btn btn btn-primary" onclick="requestRunTogether()">
+                    <i data-lucide="users" class="icon"></i>
+                    Request Run Together
+                </button>
+                <button class="action-btn btn btn-outline" onclick="sendMessage()">
+                    <i data-lucide="message-circle" class="icon"></i>
+                    Send Message
+                </button>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+</html>

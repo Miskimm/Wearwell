@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate PWA Icons</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            text-align: center;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            margin: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Running Buddy PWA Icon Generator</h1>
+    <p>Click buttons below to download icons</p>
+    
+    <canvas id="canvas192" width="192" height="192"></canvas>
+    <canvas id="canvas512" width="512" height="512"></canvas>
+    
+    <br>
+    <button onclick="downloadIcon(192)">Download 192x192</button>
+    <button onclick="downloadIcon(512)">Download 512x512</button>
+    
+    <script>
+        function drawIcon(size) {
+            const canvas = document.getElementById(`canvas${size}`);
+            const ctx = canvas.getContext('2d');
+            
+            // gradient background
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // running person icon
+            ctx.fillStyle = 'white';
+            
+            // head
+            const headSize = size * 0.15;
+            ctx.beginPath();
+            ctx.arc(size * 0.4, size * 0.3, headSize, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // body
+            ctx.beginPath();
+            ctx.moveTo(size * 0.4, size * 0.3 + headSize);
+            ctx.lineTo(size * 0.5, size * 0.6);
+            ctx.lineWidth = size * 0.05;
+            ctx.strokeStyle = 'white';
+            ctx.lineCap = 'round';
+            ctx.stroke();
+            
+            // left arm
+            ctx.beginPath();
+            ctx.moveTo(size * 0.4, size * 0.4);
+            ctx.lineTo(size * 0.25, size * 0.5);
+            ctx.stroke();
+            
+            // right arm
+            ctx.beginPath();
+            ctx.moveTo(size * 0.4, size * 0.4);
+            ctx.lineTo(size * 0.55, size * 0.35);
+            ctx.stroke();
+            
+            // left leg
+            ctx.beginPath();
+            ctx.moveTo(size * 0.5, size * 0.6);
+            ctx.lineTo(size * 0.35, size * 0.75);
+            ctx.stroke();
+            
+            // right leg
+            ctx.beginPath();
+            ctx.moveTo(size * 0.5, size * 0.6);
+            ctx.lineTo(size * 0.65, size * 0.7);
+            ctx.stroke();
+        }
+        
+        function downloadIcon(size) {
+            const canvas = document.getElementById(`canvas${size}`);
+            const link = document.createElement('a');
+            link.download = `icon-${size}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        // draw icons on load
+        drawIcon(192);
+        drawIcon(512);
+    </script>
+</body>
+</html>
+

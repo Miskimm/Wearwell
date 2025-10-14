@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Login - Running Buddy</title>
+    <meta name="description" content="Login to Running Buddy and find your perfect running partner">
+    
+    <!-- global styles -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/login.css">
+    
+    <!-- icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- login content -->
+        <main class="login-main">
+            <!-- slogan -->
+            <div class="slogan">
+                <h1 class="slogan-text">Run together, go further.</h1>
+            </div>
+            
+            <!-- login buttons -->
+            <div class="login-buttons">
+                <button class="btn btn-login" onclick="handleLogin()">
+                    Login
+                </button>
+                <button class="btn btn-signup" onclick="handleSignUp()">
+                    Sign Up
+                </button>
+            </div>
+            
+            <!-- guest option -->
+            <div class="guest-option">
+                <button class="btn btn-guest" onclick="handleGuest()">
+                    Continue as Guest
+                </button>
+            </div>
+            
+            <!-- app name -->
+            <div class="app-name">
+                <h2 class="app-title">RUNNING BUDDY</h2>
+            </div>
+            
+            <!-- legal disclaimer -->
+            <div class="legal-disclaimer">
+                <p class="disclaimer-text">
+                    By continuing, you agree to our Privacy Policy and Terms of Service.
+                </p>
+            </div>
+        </main>
+    </div>
+    
+    <!-- scripts -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>

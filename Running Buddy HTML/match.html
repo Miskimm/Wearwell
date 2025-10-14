@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Match Confirmation - Running Buddy</title>
+    <meta name="description" content="Confirm running match request">
+    
+    <!-- global styles -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/match.css">
+    
+    <!-- icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- header -->
+        <header class="header">
+            <div class="header-content">
+                <button class="back-btn" onclick="goBack()">
+                    <i data-lucide="arrow-left" class="icon"></i>
+                </button>
+                <div class="header-info">
+                    <h1 class="header-title">Match Confirmation</h1>
+                </div>
+            </div>
+        </header>
+
+        <!-- main content -->
+        <main class="main-content">
+            <!-- match success card -->
+            <div class="match-card">
+                <div class="match-header">
+                    <div class="success-icon">
+                        <i data-lucide="check-circle" class="icon"></i>
+                    </div>
+                    <h2 class="match-title">Match Successful!</h2>
+                    <p class="match-description">You have successfully matched and can start planning your runs together</p>
+                </div>
+                
+                <div class="match-info">
+                    <div class="runner-info">
+                        <div class="runner-avatar">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b1e0?w=150&h=150&fit=crop&crop=face" 
+                                 alt="Sarah Chen" class="avatar-img">
+                        </div>
+                        <div class="runner-details">
+                            <h3 class="runner-name">Sarah Chen</h3>
+                            <div class="runner-level">Intermediate Runner</div>
+                            <div class="runner-stats">
+                                <span class="stat">Pace: 5:30 min/km</span>
+                                <span class="stat">Frequency: 4 runs/week</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- match details -->
+            <div class="match-details">
+                <h3 class="section-title">Match Details</h3>
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i data-lucide="clock" class="icon"></i>
+                        </div>
+                        <div class="detail-content">
+                            <div class="detail-label">Match Time</div>
+                            <div class="detail-value">Just now</div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i data-lucide="map-pin" class="icon"></i>
+                        </div>
+                        <div class="detail-content">
+                            <div class="detail-label">Distance</div>
+                            <div class="detail-value">200m</div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i data-lucide="target" class="icon"></i>
+                        </div>
+                        <div class="detail-content">
+                            <div class="detail-label">Pace Compatibility</div>
+                            <div class="detail-value">95%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i data-lucide="calendar" class="icon"></i>
+                        </div>
+                        <div class="detail-content">
+                            <div class="detail-label">Running Frequency</div>
+                            <div class="detail-value">Highly Compatible</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- next steps -->
+            <div class="next-steps">
+                <h3 class="section-title">Next Steps</h3>
+                <div class="steps-list">
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <div class="step-title">Schedule First Run</div>
+                            <div class="step-description">Choose a suitable time and location</div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <div class="step-title">Create Running Plan</div>
+                            <div class="step-description">Discuss running routes and goals</div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <div class="step-title">Start Running Journey</div>
+                            <div class="step-description">Enjoy running together</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- action buttons -->
+            <div class="action-section">
+                <button class="action-btn btn btn-primary" onclick="scheduleRun()">
+                    <i data-lucide="calendar" class="icon"></i>
+                    Schedule Run
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/match.js"></script>
+</body>
+</html>

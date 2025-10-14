@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Running Buddy - Project Demo</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, #dbeafe 0%, #d1fae5 50%, #fed7aa 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #2563eb;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .project-info {
+            background: #f8fafc;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .page-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .page-link {
+            display: block;
+            padding: 1rem;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .page-link:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .feature {
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border-left: 4px solid #10b981;
+        }
+        .tech-stack {
+            background: #fef3c7;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 2rem 0;
+        }
+        .tech-stack h3 {
+            margin-top: 0;
+            color: #92400e;
+        }
+        .tech-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .tech-item {
+            background: #f59e0b;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏃‍♂️ Running Buddy HTML Project</h1>
+        
+        <div class="project-info">
+            <h2>Project Overview</h2>
+            <p>This is a project that converts a Figma AI-designed React/TypeScript prototype into traditional HTML/CSS/JavaScript. The project uses a modular architecture and includes a complete running partner matching system.</p>
+        </div>
+
+        <h2>📱 Page Navigation</h2>
+        <div class="page-links">
+            <a href="login.html" class="page-link">🔐 Login</a>
+            <a href="index.html" class="page-link">🏠 Home</a>
+            <a href="runners.html" class="page-link">👥 Runners List</a>
+            <a href="profile.html" class="page-link">👤 Runner Profile</a>
+            <a href="match.html" class="page-link">🤝 Match Confirmation</a>
+            <a href="schedule.html" class="page-link">📅 Schedule Run</a>
+        </div>
+
+        <h2>✨ Key Features</h2>
+        <div class="features">
+            <div class="feature">
+                <h3>🗺️ Map View</h3>
+                <p>Display nearby runners on map with interactive markers</p>
+            </div>
+            <div class="feature">
+                <h3>📋 List View</h3>
+                <p>Display runner information in list format with search and filter support</p>
+            </div>
+            <div class="feature">
+                <h3>👤 Detailed Profile</h3>
+                <p>Complete runner profile page with statistics and achievements</p>
+            </div>
+            <div class="feature">
+                <h3>🤝 Smart Matching</h3>
+                <p>Intelligent matching system based on pace, distance and preferences</p>
+            </div>
+            <div class="feature">
+                <h3>📅 Run Scheduling</h3>
+                <p>Flexible time, location and route selection system</p>
+            </div>
+            <div class="feature">
+                <h3>📱 Responsive Design</h3>
+                <p>Perfect adaptation for mobile and desktop devices</p>
+            </div>
+        </div>
+
+        <div class="tech-stack">
+            <h3>🛠️ Tech Stack</h3>
+            <div class="tech-list">
+                <span class="tech-item">HTML5</span>
+                <span class="tech-item">CSS3</span>
+                <span class="tech-item">JavaScript ES6+</span>
+                <span class="tech-item">CSS Grid</span>
+                <span class="tech-item">Flexbox</span>
+                <span class="tech-item">CSS Variables</span>
+                <span class="tech-item">Lucide Icons</span>
+                <span class="tech-item">SessionStorage</span>
+            </div>
+        </div>
+
+        <h2>📁 Project Structure</h2>
+        <pre style="background: #f1f5f9; padding: 1rem; border-radius: 0.5rem; overflow-x: auto;">
+Running Buddy HTML/
+├── index.html              # Home page
+├── runners.html            # Runners list
+├── profile.html            # Runner profile
+├── match.html              # Match confirmation
+├── schedule.html           # Schedule run
+├── css/                    # Style files
+│   ├── reset.css           # CSS reset
+│   ├── base.css            # Base styles
+│   ├── layout.css          # Layout styles
+│   ├── components.css      # Component styles
+│   └── [page-specific styles]
+├── js/                     # JavaScript files
+│   ├── app.js              # Global logic
+│   └── [page-specific logic]
+└── assets/                 # Resource files
+        </pre>
+
+        <h2>🚀 Getting Started</h2>
+        <ol>
+            <li>Click the page links above to start browsing</li>
+            <li>Switch between map and list views on the home page</li>
+            <li>Click on runners to view detailed profiles</li>
+            <li>Experience the complete matching and scheduling process</li>
+        </ol>
+
+        <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e2e8f0;">
+            <p style="color: #64748b; margin: 0;">🎉 Project conversion completed! From React/TypeScript to HTML/CSS/JavaScript</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Running Buddy - Find Your Perfect Running Partner</title>
+    <meta name="description" content="Running Buddy - Connect with nearby runners and find your perfect running partner">
+    
+    <!-- PWA -->
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Running Buddy">
+    <link rel="manifest" href="pwa_files/manifest.json">
+    <link rel="apple-touch-icon" href="assets/icon-192.png">
+    
+    <!-- global styles -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/index.css">
+    
+    <!-- icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-info">
+                    <h1 class="header-title">Running Buddy</h1>
+                    <p class="header-subtitle">Find your perfect running partner</p>
+                </div>
+                <div class="header-icon">
+                    <button class="profile-btn" onclick="window.location.href='profile.html'" title="Profile">
+                        <i data-lucide="user" class="icon"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- view toggle -->
+            <div class="view-toggle">
+                <button class="toggle-btn active" data-view="map">
+                    <i data-lucide="map-pin" class="icon"></i>
+                    Map
+                </button>
+                <button class="toggle-btn" data-view="list">
+                    <i data-lucide="list" class="icon"></i>
+                    List
+                </button>
+            </div>
+        </header>
+
+        <!-- main content -->
+        <main class="main-content">
+            <!-- map view -->
+            <div class="view-container" id="map-view">
+                <div class="map-card">
+                    <div class="map-background">
+                        <img src="assets/map.png" 
+                             alt="Running track background" class="map-image">
+                    </div>
+                    
+                    <!-- runner pins -->
+                    <div class="runners-overlay">
+                        <!-- Runner markers positioned according to image layout -->
+                        <div class="runner-pin" data-runner="1" style="left: 25%; top: 25%;">
+                            <div class="pin-avatar">
+                                <img src="assets/sarah.png" 
+                                     alt="Sarah Chen" class="avatar-img">
+                            </div>
+                            <div class="pin-badge badge-success">Intermediate</div>
+                        </div>
+                        
+                        <div class="runner-pin" data-runner="2" style="left: 65%; top: 35%;">
+                            <div class="pin-avatar">
+                                <div class="avatar-placeholder">M</div>
+                            </div>
+                            <div class="pin-badge badge-warning">Advanced</div>
+                        </div>
+                        
+                        <div class="runner-pin" data-runner="3" style="left: 45%; top: 55%;">
+                            <div class="pin-avatar">
+                                <div class="avatar-placeholder">E</div>
+                            </div>
+                            <div class="pin-badge badge-primary">Beginner</div>
+                        </div>
+                        
+                        <div class="runner-pin" data-runner="4" style="left: 75%; top: 70%;">
+                            <div class="pin-avatar">
+                                <div class="avatar-placeholder">J</div>
+                            </div>
+                            <div class="pin-badge badge-success">Intermediate</div>
+                        </div>
+                        
+                        <!-- Additional runners based on image positions -->
+                        <div class="runner-pin" data-runner="5" style="left: 15%; top: 60%;">
+                            <div class="pin-avatar">
+                                <div class="avatar-placeholder">L</div>
+                            </div>
+                            <div class="pin-badge badge-warning">Advanced</div>
+                        </div>
+                        
+                        <div class="runner-pin" data-runner="6" style="left: 55%; top: 75%;">
+                            <div class="pin-avatar">
+                                <div class="avatar-placeholder">D</div>
+                            </div>
+                            <div class="pin-badge badge-primary">Beginner</div>
+                        </div>
+                        
+                        <div class="runner-pin" data-runner="7" style="left: 85%; top: 85%;">
+                            <div class="pin-avatar">
+                                <div class="avatar-placeholder">A</div>
+                            </div>
+                            <div class="pin-badge badge-success">Intermediate</div>
+                        </div>
+                        
+                        <!-- my location -->
+                        <div class="my-location">
+                            <div class="location-dot"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- map controls -->
+                    <div class="map-controls">
+                        <button class="control-btn" id="switch-to-list">
+                            <i data-lucide="list" class="icon"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- list view -->
+            <div class="view-container hidden" id="list-view">
+                <div class="list-header">
+                    <h2 class="list-title">Nearby Runners</h2>
+                    <div class="list-count badge badge-primary">7 runners</div>
+                </div>
+                
+                <div class="runners-list">
+                    <div class="runner-card" data-runner="1">
+                        <div class="runner-avatar">
+                            <img src="assets/sarah.png" 
+                                 alt="Sarah Chen" class="avatar-img">
+                        </div>
+                        <div class="runner-info">
+                            <div class="runner-header">
+                                <h3 class="runner-name">Sarah Chen</h3>
+                                <div class="runner-badge badge badge-success">Intermediate</div>
+                            </div>
+                            <div class="runner-details">
+                                <div class="detail-item">
+                                    <i data-lucide="target" class="icon"></i>
+                                    <span>5:30 min/km</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i data-lucide="play" class="icon"></i>
+                                    <span>4 runs/week</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i data-lucide="map-pin" class="icon"></i>
+                                    <span>200m</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="runner-card" data-runner="2">
+                        <div class="runner-avatar">
+                            <div class="avatar-placeholder">M</div>
+                        </div>
+                        <div class="runner-info">
+                            <div class="runner-header">
+                                <h3 class="runner-name">Mike Rodriguez</h3>
+                                <div class="runner-badge badge badge-warning">Advanced</div>
+                            </div>
+                            <div class="runner-details">
+                                <div class="detail-item">
+                                    <i data-lucide="target" class="icon"></i>
+                                    <span>4:45 min/km</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i data-lucide="play" class="icon"></i>
+                                    <span>6runs/week</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i data-lucide="map-pin" class="icon"></i>
+                                    <span>350m</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="runner-card" data-runner="3">
+                        <div class="runner-avatar">
+                            <div class="avatar-placeholder">E</div>
+                        </div>
+                        <div class="runner-info">
+                            <div class="runner-header">
+                                <h3 class="runner-name">Emma Wilson</h3>
+                                <div class="runner-badge badge badge-primary">Beginner</div>
+                            </div>
+                            <div class="runner-details">
+                                <div class="detail-item">
+                                    <i data-lucide="target" class="icon"></i>
+                                    <span>6:45 min/km</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i data-lucide="play" class="icon"></i>
+                                    <span>3runs/week</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i data-lucide="map-pin" class="icon"></i>
+                                    <span>500m</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="runner-card" data-runner="4">
+                        <div class="runner-avatar">
+                            <div class="avatar-placeholder">J</div>
+                        </div>
+                        <div class="runner-info">
+                            <div class="runner-header">
+                                <h3 class="runner-name">James Park</h3>
+                                <div class="runner-badge badge badge-success">Intermediate</div>
+                            </div>
+                            <div class="runner-details">
+                                <div class="detail-item">
+                                    <i data-lucide="target" class="icon"></i>
+                                    <span>5:15 min/km</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i data-lucide="play" class="icon"></i>
+                                    <span>5runs/week</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i data-lucide="map-pin" class="icon"></i>
+                                    <span>750m</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="runner-card" data-runner="5">
+                        <div class="runner-avatar">
+                            <div class="avatar-placeholder">L</div>
+                        </div>
+                        <div class="runner-info">
+                            <div class="runner-header">
+                                <h3 class="runner-name">Lisa Zhang</h3>
+                                <div class="runner-badge badge badge-warning">Advanced</div>
+                            </div>
+                            <div class="runner-details">
+                                <div class="detail-item">
+                                    <i data-lucide="target" class="icon"></i>
+                                    <span>4:30 min/km</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i data-lucide="play" class="icon"></i>
+                                    <span>7 runs/week</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i data-lucide="map-pin" class="icon"></i>
+                                    <span>900m</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="runner-card" data-runner="6">
+                        <div class="runner-avatar">
+                            <div class="avatar-placeholder">D</div>
+                        </div>
+                        <div class="runner-info">
+                            <div class="runner-header">
+                                <h3 class="runner-name">David Kim</h3>
+                                <div class="runner-badge badge badge-primary">Beginner</div>
+                            </div>
+                            <div class="runner-details">
+                                <div class="detail-item">
+                                    <i data-lucide="target" class="icon"></i>
+                                    <span>7:00 min/km</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i data-lucide="play" class="icon"></i>
+                                    <span>2 runs/week</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i data-lucide="map-pin" class="icon"></i>
+                                    <span>1.2km</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="runner-card" data-runner="7">
+                        <div class="runner-avatar">
+                            <div class="avatar-placeholder">A</div>
+                        </div>
+                        <div class="runner-info">
+                            <div class="runner-header">
+                                <h3 class="runner-name">Anna Petrov</h3>
+                                <div class="runner-badge badge badge-success">Intermediate</div>
+                            </div>
+                            <div class="runner-details">
+                                <div class="detail-item">
+                                    <i data-lucide="target" class="icon"></i>
+                                    <span>5:45 min/km</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i data-lucide="play" class="icon"></i>
+                                    <span>4 runs/week</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i data-lucide="map-pin" class="icon"></i>
+                                    <span>1.5km</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/index.js"></script>
+    
+    <!-- PWA Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/pwa_files/sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registered successfully:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
