@@ -25,6 +25,32 @@ function loadRunnerData() {
     // get selected runner ID from sessionStorage
     const selectedRunnerId = sessionStorage.getItem('selectedRunner');
     
+    // 如果是点击头像进入的，显示当前用户（LAN BELL）
+    const isCurrentUser = !selectedRunnerId || selectedRunnerId === 'lanbell';
+    
+    if (isCurrentUser) {
+        // 显示当前用户 LAN BELL 的资料
+        const currentUserProfile = {
+            id: 'lanbell',
+            name: 'LAN BELL',
+            avatar: 'assets/profile.png',
+            level: 'Intermediate Runner',
+            pace: '5:30',
+            runsPerWeek: '4',
+            lastActivity: 'Ran yesterday',
+            totalRuns: 156,
+            totalDistance: 780,
+            bestPace: '5:15 min/km',
+            recentActivities: [
+                { date: 'Yesterday', distance: '5.2km', time: '28:45', pace: '5:32 min/km' },
+                { date: '2 days ago', distance: '3.8km', time: '21:30', pace: '5:39 min/km' },
+                { date: '4 days ago', distance: '7.1km', time: '39:15', pace: '5:31 min/km' }
+            ]
+        };
+        updateRunnerProfile(currentUserProfile);
+        return;
+    }
+    
     // get all runners data
     const runners = getRunnersData();
     

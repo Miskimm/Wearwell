@@ -24,6 +24,9 @@ function initializeApp() {
     
     // init data
     initializeData();
+    
+    // init current user display
+    initializeCurrentUserDisplay();
 }
 
 // update page title
@@ -81,11 +84,38 @@ function handleLinkClick(event) {
 
 // 返回上一页
 function goBack() {
-    if (window.history.length > 1) {
-        window.history.back();
-    } else {
-        // 如果没有历史记录，返回首页
+    const currentPage = getCurrentPage();
+    
+    // 根据当前页面和来源智能导航
+    if (currentPage === 'profile') {
+        // 如果是个人资料页面，检查是如何进入的
+        const selectedRunner = sessionStorage.getItem('selectedRunner');
+        const currentUser = sessionStorage.getItem('currentUser');
+        
+        if (currentUser === 'lanbell' || !selectedRunner) {
+            // 如果是查看当前用户资料或没有选择特定跑步者，返回地图页面
+            navigateToPage('index');
+        } else {
+            // 如果是查看其他跑步者资料，返回到跑步者列表页面
+            navigateToPage('runners');
+        }
+    } else if (currentPage === 'shared-goal') {
+        // 从共同目标页面返回地图页面
         navigateToPage('index');
+    } else if (currentPage === 'match') {
+        // 从匹配页面返回跑步者列表
+        navigateToPage('runners');
+    } else if (currentPage === 'schedule') {
+        // 从日程页面返回匹配页面
+        navigateToPage('match');
+    } else {
+        // 其他情况使用浏览器历史记录
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            // 如果没有历史记录，返回首页
+            navigateToPage('index');
+        }
     }
 }
 
@@ -391,9 +421,54 @@ function throttle(func, limit) {
     };
 }
 
+// initialize current user display
+function initializeCurrentUserDisplay() {
+    // 获取当前用户信息（LAN BELL）
+    const currentUser = {
+        id: 'lanbell',
+        name: 'LAN BELL',
+        avatar: 'assets/profile.png',
+        level: 'Intermediate'
+    };
+    
+    // 更新所有页面的用户头像
+    updateHeaderUserAvatar(currentUser);
+}
+
+// 更新头部用户头像
+function updateHeaderUserAvatar(user) {
+    const headerAvatarImg = document.getElementById('header-avatar-img');
+    if (headerAvatarImg) {
+        headerAvatarImg.src = user.avatar;
+        headerAvatarImg.alt = user.name;
+        console.log('Updated header avatar for:', user.name);
+    }
+    
+    // 如果页面有用户头像占位符，也更新它
+    const headerUserAvatar = document.getElementById('header-user-avatar');
+    if (headerUserAvatar && !headerAvatarImg) {
+        headerUserAvatar.innerHTML = `
+            <img src="${user.avatar}" alt="${user.name}" class="avatar-img" id="header-avatar-img">
+        `;
+        console.log('Created header avatar for:', user.name);
+    }
+}
+
+// 查看当前用户资料
+function viewCurrentUserProfile() {
+    // 清除其他跑步者选择，设置为当前用户
+    sessionStorage.removeItem('selectedRunner');
+    sessionStorage.setItem('currentUser', 'lanbell');
+    
+    // 跳转到个人资料页面
+    window.location.href = 'profile.html';
+}
+
 // 导出全局函数
 window.goBack = goBack;
 window.navigateToPage = navigateToPage;
 window.showNotification = showNotification;
 window.formatTime = formatTime;
 window.formatDistance = formatDistance;
+window.initializeCurrentUserDisplay = initializeCurrentUserDisplay;
+window.viewCurrentUserProfile = viewCurrentUserProfile;
