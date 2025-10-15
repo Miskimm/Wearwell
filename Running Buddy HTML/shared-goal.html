@@ -68,13 +68,49 @@
 
             <!-- common goal progress -->
             <div class="goal-progress-card">
-                <h3>Set your common goal</h3>
+                <div class="goal-header">
+                    <h3>Set your common goal</h3>
+                    <div class="goal-type-selector">
+                        <select id="goal-type-select" class="goal-type-dropdown">
+                            <option value="calories">Calories</option>
+                            <option value="steps">Steps</option>
+                            <option value="distance">Distance</option>
+                            <option value="duration">Duration</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Inline Goal Setting -->
+                <div class="inline-goal-setting">
+                    <div class="goal-slider-container">
+                        <input type="range" id="inline-goal-slider" class="goal-slider" min="1000" max="10000" step="50" value="2250">
+                        <div class="slider-track">
+                            <div class="slider-fill" id="slider-fill"></div>
+                        </div>
+                        <div class="slider-labels">
+                            <span class="slider-min" id="slider-min">1000</span>
+                            <span class="slider-max" id="slider-max">10000</span>
+                        </div>
+                    </div>
+                    
+                    <div class="goal-display">
+                        <div class="current-goal">
+                            <span class="goal-value" id="current-goal-value">2250</span>
+                            <span class="goal-unit" id="current-goal-unit">kcal</span>
+                        </div>
+                        <div class="goal-progress">
+                            <span class="progress-text">Current Progress: </span>
+                            <span class="progress-percentage" id="current-progress">80%</span>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="progress-container">
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: 80%"></div>
+                        <div class="progress-fill" id="progress-fill" style="width: 80%"></div>
                     </div>
                     <div class="progress-text">
-                        <span class="progress-percentage">80%</span>
+                        <span class="progress-percentage" id="progress-percentage">80%</span>
                         <span class="progress-target">to your goal</span>
                     </div>
                     <div class="goal-target">
