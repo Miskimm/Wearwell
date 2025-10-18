@@ -1,0 +1,224 @@
+/* === Recommendation UI === */
+
+/* 让地图容器作为定位上下文，并裁剪溢出的弹层阴影
+   如需更高可视区，可打开下面的 min-height */
+.map-card {
+  position: relative;        /* anchor for absolute children */
+  overflow: hidden;          /* keep overlay within the map area */
+  /* min-height: 520px; */   /* optional: improve modal room on short maps */
+}
+
+/* —— Floating Action Button (left-bottom inside map) —— */
+.fab-reco {
+  position: absolute;        /* inside .map-card */
+  left: 16px;
+  bottom: 16px;
+  background: #2563eb;
+  color: #fff;
+  border: 0;
+  border-radius: 9999px;
+  padding: 12px 16px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1;
+  box-shadow: 0 8px 20px rgba(37,99,235,0.35);
+  cursor: pointer;
+  z-index: 20;               /* lower than overlay(40) so modal can cover it */
+  transition: transform .08s ease, box-shadow .2s ease, opacity .2s ease;
+  user-select: none;
+}
+.fab-reco:hover { box-shadow: 0 10px 24px rgba(37,99,235,0.45); }
+.fab-reco:active { transform: translateY(1px) scale(0.99); }
+.fab-reco:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
+
+/* —— Local overlay (only covers the map) —— */
+.reco-overlay {
+  position: absolute;        /* scoped to .map-card */
+  inset: 0;                  /* fill the map area */
+  background: rgba(15,23,42,0.45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 40;               /* above pins/controls and the button */
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border-radius: inherit;    /* follow map-card radius if any */
+  padding: 16px;             /* leave breathing room from map edges */
+}
+.reco-overlay.show { display: flex; }
+
+/* —— Modal —— */
+.reco-modal {
+  /* 在 overlay 内自适应：宽度占满，但限制最大宽度；高度不超过地图可视区 */
+  width: 100%;
+  max-width: 860px;
+  max-height: calc(100% - 32px); /* overlay padding(16px*2) already reserved */
+  background: #fff;
+  color: #0f172a;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(2,6,23,0.35);
+  overflow: hidden;          /* 由 body 自行滚动 */
+  animation: reco-pop .14s ease-out;
+  display: flex;             /* 固定 header，body 区域滚动 */
+  flex-direction: column;
+}
+@keyframes reco-pop {
+  from { transform: scale(.96); opacity:.7; }
+  to   { transform: scale(1);   opacity:1; }
+}
+
+/* —— Modal header —— */
+.reco-header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 14px 18px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f8fafc;
+}
+.reco-title {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: .2px;
+}
+.reco-close {
+  border: 0;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 6px;
+  border-radius: 8px;
+}
+.reco-close:hover { background: #e5e7eb; }
+.reco-close:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }
+
+/* —— Modal body —— */
+.reco-body {
+  flex: 1 1 auto;            /* 占据剩余空间 */
+  padding: 16px;
+  display: grid;
+  /* 自适应列数：最少 240px 宽度一列，空间不足会自动换行 */
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  overflow: auto;            /* 内容多时内部滚动，避免被裁切 */
+}
+@media (max-width: 700px) {
+  .reco-body { grid-template-columns: 1fr; }
+}
+
+/* —— Runner cards —— */
+.reco-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 14px;
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 12px;
+  align-items: center;
+  background: #fff;
+  min-width: 0;              /* 防止内容撑破列 */
+}
+.reco-card:hover { box-shadow: 0 8px 24px rgba(2,6,23,0.06); }
+
+.reco-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 9999px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: #eef2ff;
+  font-weight: 800;
+  color: #3730a3;
+  font-size: 18px;
+  user-select: none;
+}
+.reco-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.reco-name {
+  font-weight: 800;
+  font-size: 16px;
+  margin-bottom: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reco-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.reco-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 9999px;
+  font-size: 12px;
+  border: 1px solid #e5e7eb;
+  background: #f8fafc;
+  line-height: 1.1;
+}
+
+/* —— Badges —— */
+.badge {
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.2;
+  display: inline-block;
+}
+.badge-primary  { background:#dbeafe; color:#1d4ed8; }
+.badge-success  { background:#dcfce7; color:#15803d; }
+.badge-warning  { background:#fef3c7; color:#b45309; }
+
+/* —— Actions —— */
+.reco-actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+}
+.btn-match {
+  background:#2563eb;
+  color:#fff;
+  border:0;
+  border-radius:10px;
+  padding:8px 12px;
+  font-weight:800;
+  cursor:pointer;
+  line-height: 1.1;
+}
+.btn-match:hover { filter: brightness(1.05); }
+.btn-match:active { transform: translateY(1px); }
+.btn-match:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; }
+.btn-match[aria-pressed="true"] {
+  background:#16a34a; /* matched state */
+}
+
+/* —— Reduced motion —— */
+@media (prefers-reduced-motion: reduce) {
+  .reco-modal { animation: none; }
+  .fab-reco,
+  .btn-match { transition: none; }
+}
+
+/* —— High contrast mode tweaks —— */
+@media (forced-colors: active) {
+  .fab-reco,
+  .btn-match,
+  .reco-close {
+    border: 1px solid ButtonText;
+  }
+  .reco-overlay { background: rgba(0,0,0,0.5); }
+}

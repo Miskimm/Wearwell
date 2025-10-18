@@ -23,6 +23,7 @@
     
     <!-- icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.css">
+    <link rel="stylesheet" href="css/recommendation.css">
 </head>
 <body>
     <div class="app-container">
@@ -124,7 +125,71 @@
                             <div class="location-dot"></div>
                         </div>
                     </div>
-                    
+                    <button id="recoButton" class="fab-reco" aria-haspopup="dialog" aria-controls="recoDialog">
+  Recommendation
+</button>
+
+<div id="recoOverlay" class="reco-overlay" role="presentation">
+  <div id="recoDialog" class="reco-modal" role="dialog" aria-modal="true" aria-labelledby="recoTitle">
+    <div class="reco-header">
+      <div id="recoTitle" class="reco-title">Recommended Matches</div>
+      <button class="reco-close" id="recoClose" aria-label="Close">×</button>
+    </div>
+
+    <div class="reco-body">
+      <!-- Card 1: Sarah Chen -->
+      <article class="reco-card" data-runner="1">
+        <div class="reco-avatar">
+          <img src="assets/sarah.png" alt="Sarah Chen">
+        </div>
+        <div>
+          <div class="reco-name">Sarah Chen <span class="badge badge-success">Intermediate</span></div>
+          <div class="reco-meta">
+            <span class="reco-chip">🏁 5:30 min/km</span>
+            <span class="reco-chip">▶️ 4 runs/week</span>
+            <span class="reco-chip">📍 200m</span>
+          </div>
+          <div class="reco-actions">
+            <button class="btn-match" data-name="Sarah Chen" aria-pressed="false">Match</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 2: Mike Rodriguez -->
+      <article class="reco-card" data-runner="2">
+        <div class="reco-avatar">M</div>
+        <div>
+          <div class="reco-name">Mike Rodriguez <span class="badge badge-warning">Advanced</span></div>
+          <div class="reco-meta">
+            <span class="reco-chip">🏁 4:45 min/km</span>
+            <span class="reco-chip">▶️ 6 runs/week</span>
+            <span class="reco-chip">📍 350m</span>
+          </div>
+          <div class="reco-actions">
+            <button class="btn-match" data-name="Mike Rodriguez" aria-pressed="false">Match</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 3: Emma Wilson -->
+      <article class="reco-card" data-runner="3">
+        <div class="reco-avatar">E</div>
+        <div>
+          <div class="reco-name">Emma Wilson <span class="badge badge-primary">Beginner</span></div>
+          <div class="reco-meta">
+            <span class="reco-chip">🏁 6:45 min/km</span>
+            <span class="reco-chip">▶️ 3 runs/week</span>
+            <span class="reco-chip">📍 500m</span>
+          </div>
+          <div class="reco-actions">
+            <button class="btn-match" data-name="Emma Wilson" aria-pressed="false">Match</button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>
+
                     <!-- map controls -->
                     <div class="map-controls">
                         <button class="control-btn" id="switch-to-list">
@@ -440,5 +505,42 @@
             });
         }
     </script>
+
+<!-- Recommendation -->
+<script>
+(function () {
+  const btn = document.getElementById('recoButton');
+  const overlay = document.getElementById('recoOverlay');
+  const dialog = document.getElementById('recoDialog');
+  const closeBtn = document.getElementById('recoClose');
+
+  // ✅ 只锁定地图容器滚动
+  const mapCard = btn.closest('.map-card');
+
+  function openModal() {
+    overlay.classList.add('show');
+    if (mapCard) mapCard.style.overflow = 'hidden';  // ✅
+    dialog.focus();
+  }
+  function closeModal() {
+    overlay.classList.remove('show');
+    if (mapCard) mapCard.style.overflow = '';        // ✅
+    btn.focus();
+  }
+
+  btn.addEventListener('click', openModal);
+  closeBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.classList.contains('show')) closeModal();
+  });
+
+  // “Match” 按钮逻辑保持不变…
+})();
+</script>
+<!-- 🔼 End Recommendation UI -->
+
 </body>
 </html>
