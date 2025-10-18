@@ -334,6 +334,98 @@
     <script src="js/app.js"></script>
     <script src="js/index.js"></script>
     
+    <!-- Geolocation Permission Request -->
+    <script>
+        // 地理位置权限请求
+        function requestGeolocationPermission() {
+            if (!navigator.geolocation) {
+                showLocationAlert('Your browser does not support geolocation', 'warning');
+                return;
+            }
+
+            // 在网页端，每次都直接请求权限，不检查之前的状态
+            // 这样确保每次都需要用户手动开启
+            requestLocation();
+        }
+
+        // 请求位置权限（但不获取真实位置）
+        function requestLocation() {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    // 成功获取位置，但不显示真实位置
+                    showLocationAlert('Location permission granted. Showing nearby runners', 'success');
+                    showMyLocation();
+                    // 这里不更新地图上的位置，保持使用伪坐标点
+                },
+                function(error) {
+                    let message = '';
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            message = 'Location permission denied. Please allow location access in browser settings';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            message = 'Location information unavailable';
+                            break;
+                        case error.TIMEOUT:
+                            message = 'Location request timeout';
+                            break;
+                        default:
+                            message = 'Unknown error occurred while getting location';
+                            break;
+                    }
+                    showLocationAlert(message, 'error');
+                },
+                {
+                    enableHighAccuracy: false,
+                    timeout: 10000,
+                    maximumAge: 60000
+                }
+            );
+        }
+
+        // 显示我的位置（伪坐标点）
+        function showMyLocation() {
+            const myLocation = document.querySelector('.my-location');
+            if (myLocation) {
+                myLocation.style.display = 'block';
+                myLocation.style.setProperty('display', 'block', 'important');
+                console.log('My location should be visible now');
+            } else {
+                console.log('My location element not found');
+            }
+        }
+
+        // 显示位置提示
+        function showLocationAlert(message, type) {
+            // 创建提示元素
+            const alert = document.createElement('div');
+            alert.className = `location-alert alert-${type}`;
+            alert.innerHTML = `
+                <div class="alert-content">
+                    <i class="alert-icon">${type === 'success' ? '✓' : type === 'warning' ? '⚠' : '✗'}</i>
+                    <span class="alert-message">${message}</span>
+                    <button class="alert-close" onclick="this.parentElement.parentElement.remove()">×</button>
+                </div>
+            `;
+            
+            // 添加到页面
+            document.body.appendChild(alert);
+            
+            // 自动移除
+            setTimeout(() => {
+                if (alert.parentElement) {
+                    alert.remove();
+                }
+            }, 5000);
+        }
+
+        // 页面加载完成后请求位置权限
+        document.addEventListener('DOMContentLoaded', function() {
+            // 延迟2秒后请求位置权限，给用户时间看到页面
+            setTimeout(requestGeolocationPermission, 2000);
+        });
+    </script>
+
     <!-- PWA Service Worker -->
     <script>
         if ('serviceWorker' in navigator) {
