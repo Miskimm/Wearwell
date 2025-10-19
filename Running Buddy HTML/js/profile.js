@@ -507,60 +507,116 @@ function showSendingAnimation(runnerName) {
     }, 500);
 }
 
-// send message function
+// ---- 快捷消息清单（可按需改文案）----
+const QUICK_MESSAGES = [
+  "Hi! Want to run together tomorrow morning?",
+  "Nice pace! Join me for 5–8km this weekend?",
+  "I usually run around UQ at 6:30am — keen?",
+  "Great stats! Fancy an evening 5k today?",
+  "Free for a recovery run (5:45–6:00) this week?"
+];
+
+// 覆盖：点击底部按钮时，弹出“快捷消息”对话框
 function sendMessage() {
-    const runnerId = sessionStorage.getItem('selectedRunner');
-    const runnerName = document.getElementById('profile-name')?.textContent || 'Runner';
-    
-    if (!runnerId) {
-        showNotification('Unable to get runner info', 'error');
-        return;
-    }
-    
-    // show message input modal
-    showMessageModal(runnerName);
+  const runnerId = sessionStorage.getItem('selectedRunner');
+  const runnerName = document.getElementById('profile-name')?.textContent || 'Runner';
+  if (!runnerId) {
+    showNotification('Unable to get runner info', 'error');
+    return;
+  }
+  showQuickMessageModal(runnerName);
 }
 
-// show message modal
-function showMessageModal(runnerName) {
-    const modal = document.createElement('div');
-    modal.className = 'modal-overlay';
-    modal.innerHTML = `
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Send Message to ${runnerName}</h3>
-                <button class="modal-close" onclick="closeModal(this)">
-                    <i data-lucide="x" class="icon"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="message-form">
-                    <textarea class="message-input" placeholder="Type your message here..." rows="4"></textarea>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" onclick="sendMessageToRunner(this)">
-                    Send Message
-                </button>
-                <button class="btn btn-outline" onclick="closeModal(this)">
-                    Cancel
-                </button>
-            </div>
+// 新增：快捷消息弹窗
+function showQuickMessageModal(runnerName) {
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-labelledby', 'quick-msg-title');
+
+  const quickList = QUICK_MESSAGES.map((m, idx) => `
+    <button class="quick-reply" data-msg="${m.replace(/"/g, '&quot;')}">
+      <i data-lucide="message-circle" class="icon"></i>
+      <span>${m}</span>
+    </button>
+  `).join('');
+
+  modal.innerHTML = `
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="quick-msg-title" class="modal-title">Quick message to ${runnerName}</h3>
+        <button class="modal-close" onclick="closeModal(this)">
+          <i data-lucide="x" class="icon"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="quick-replies">
+          ${quickList}
         </div>
-    `;
-    
-    // add to page
-    document.body.appendChild(modal);
-    
-    // init icons
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
+
+        <div class="divider"><span>or</span></div>
+
+        <div class="message-form">
+          <textarea class="message-input" placeholder="Write a custom message..." rows="3"></textarea>
+          <button class="btn btn-subtle send-custom-btn">Send custom message</button>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal(this)">Cancel</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  // 图标
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
+
+  // 显示动效
+  setTimeout(() => modal.classList.add('show'), 50);
+
+  // 绑定：点快捷消息直接发送并自动关闭
+  modal.querySelectorAll('.quick-reply').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const msg = btn.getAttribute('data-msg') || '';
+      sendQuickMessage(msg, btn);
+    });
+  });
+
+  // 绑定：发送自定义消息
+  const customBtn = modal.querySelector('.send-custom-btn');
+  const textarea = modal.querySelector('.message-input');
+  customBtn.addEventListener('click', () => {
+    const msg = (textarea.value || '').trim();
+    if (!msg) {
+      showNotification('Please enter a message', 'error');
+      return;
     }
-    
-    // show modal
-    setTimeout(() => {
-        modal.classList.add('show');
-    }, 100);
+    sendQuickMessage(msg, customBtn);
+  });
+}
+
+// 新增：统一的发送逻辑（含“发送中”状态与自动关闭）
+function sendQuickMessage(message, triggerEl) {
+  // 防重复点击
+  const modal = triggerEl.closest('.modal-overlay');
+  modal.querySelectorAll('button').forEach(b => b.disabled = true);
+
+  // 简单“发送中”提示
+  triggerEl.classList.add('sending');
+  triggerEl.innerHTML = `<span>Sending...</span>`;
+
+  // 模拟发送
+  setTimeout(() => {
+    showNotification('Message sent successfully!', 'success');
+    // 关闭弹窗
+    modal.classList.remove('show');
+    setTimeout(() => modal.remove(), 200);
+  }, 500);
 }
 
 // send message to runner
