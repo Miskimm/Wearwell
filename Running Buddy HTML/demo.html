@@ -179,5 +179,27 @@ Running Buddy HTML/
             <p style="color: #64748b; margin: 0;">🎉 Project conversion completed! From React/TypeScript to HTML/CSS/JavaScript</p>
         </div>
     </div>
+
+    <!-- Inline Notification demo banner -->
+    <div id="inlineRequestNotice" class="inline-notice" role="region" aria-live="polite" aria-label="Run request notification" style="display:none; max-width:800px; margin:1rem auto;">
+        <div class="notice-content">
+          <div class="notice-title">New Run Request</div>
+          <div class="notice-body" id="noticeText">You have a new run request.</div>
+          <div class="notice-actions">
+            <button class="btn btn-primary" onclick="acceptRequest()">Accept</button>
+            <button class="btn" onclick="dismissRequest()">Dismiss</button>
+          </div>
+        </div>
+    </div>
+
+    <div style="max-width:800px; margin:0 auto; display:flex; gap:.5rem; justify-content:flex-end;">
+      <button class="btn" onclick="(sessionStorage.setItem('incomingRequestRunner','1'), showInlineRequest && showInlineRequest('1'))">Inject Request (Sarah)</button>
+      <button class="btn" onclick="(sessionStorage.removeItem('incomingRequestRunner'), dismissRequest && dismissRequest())">Clear</button>
+    </div>
+
+    <link rel="stylesheet" href="css/notifications.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/notifications.js"></script>
 </body>
 </html>

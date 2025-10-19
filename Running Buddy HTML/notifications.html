@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Notifications - Running Buddy</title>
+    <meta name="description" content="Running Buddy - Notifications">
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/notifications.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.css">
+
+    <style>
+      /* Compact rectangular banner pinned at map top-right */
+      .map-card { position: relative; }
+      .inline-notice {
+        position: absolute;
+        top: var(--spacing-4);
+        right: var(--spacing-4);
+        left: var(--spacing-4);
+        width: auto; /* responsive width */
+        max-width: 520px; /* fit phones */
+        z-index: var(--z-tooltip);
+        border: 1px solid var(--border);
+        border-left: 4px solid var(--info);
+        border-radius: var(--radius-lg);
+        background: #fff;
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+        display: none;
+      }
+      .inline-notice.show { display: block; animation: fadeIn .2s ease-out; }
+      .inline-notice .notice-content { padding: var(--spacing-2); }
+      .inline-notice .notice-title { font-weight: var(--font-semibold); margin-bottom: var(--spacing-1); }
+      .inline-notice .notice-body { color: var(--muted-foreground); font-size: var(--text-sm); margin-bottom: var(--spacing-2); }
+      .inline-notice .notice-actions { display: flex; gap: var(--spacing-2); align-items: center; justify-content: space-between; }
+      .inline-notice .btn { padding: 0.35rem 0.6rem; border-radius: var(--radius-md); border: 1px solid var(--border); background: #fff; cursor: pointer; font-size: .85rem; }
+      .inline-notice .btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+      .inline-notice .btn:hover { filter: brightness(0.98); }
+      /* 覆盖：在通知内的强调按钮使用渐变背景（避免被上面的白底覆盖） */
+      .inline-notice .btn-accept { background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%); color: #fff; border: none; }
+
+      /* Header gradient */
+      .notice-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--spacing-1) var(--spacing-2);
+        background: linear-gradient(135deg, #6d28d9 0%, #2563eb 100%);
+        color: #fff;
+        border-top-left-radius: var(--radius-lg);
+        border-top-right-radius: var(--radius-lg);
+      }
+      .notice-header .header-left { display: flex; align-items: center; gap: var(--spacing-2); font-weight: var(--font-semibold); font-size: .85rem; }
+      .notice-header .icon { width: 1.25rem; height: 1.25rem; }
+      .notice-close { background: rgba(255,255,255,.15); border: none; border-radius: 999px; padding: 6px; color: #fff; cursor: pointer; }
+      .notice-close .icon { width: 1rem; height: 1rem; }
+
+      /* Content layout (more condensed) */
+      .request-info { display: flex; align-items: center; gap: var(--spacing-2); margin-top: 4px; }
+      .req-avatar { width: 24px; height: 24px; border-radius: 999px; object-fit: cover; border: 1px solid #e5e7eb; }
+      .req-main { display: flex; align-items: center; gap: var(--spacing-2); flex-wrap: wrap; }
+      .req-name { font-weight: var(--font-semibold); font-size: .9rem; color: var(--foreground); }
+      .req-level { font-size: .75rem; }
+      .req-meta { list-style: none; padding: 0; margin: 4px 0; display: grid; grid-template-columns: repeat(3, max-content); gap: var(--spacing-2); align-items: center; }
+      .req-meta li { display: flex; align-items: center; gap: .5rem; color: var(--foreground); }
+      .req-meta .icon { width: 1rem; height: 1rem; color: var(--muted-foreground); }
+      .req-message { background: #eef2ff; color: #1e293b; border-radius: var(--radius-md); padding: 4px 8px; margin-bottom: var(--spacing-2); font-size: .85rem; /* show full message */ overflow-wrap: anywhere; }
+      .btn-decline { border: none; background: transparent; color: #0f172a; }
+      .btn-accept { background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%); color: #fff; border: none; box-shadow: var(--shadow-sm); }
+    </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="header">
+      <div class="header-content">
+        <div class="header-info">
+          <h1 class="header-title">Notifications</h1>
+          <p class="header-subtitle">Receive and manage run requests</p>
+        </div>
+        <div class="header-icon">
+          <button class="profile-btn" onclick="viewCurrentUserProfile()" title="Profile">
+            <div class="user-avatar" id="header-user-avatar">
+              <img src="assets/profile.png" alt="LAN BELL" class="avatar-img" id="header-avatar-img">
+            </div>
+          </button>
+        </div>
+      </div>
+      <div class="view-toggle">
+        <button class="toggle-btn active" data-view="map">
+          <i data-lucide="map-pin" class="icon"></i>
+          Map
+        </button>
+        <button class="toggle-btn" data-view="list">
+          <i data-lucide="list" class="icon"></i>
+          List
+        </button>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <!-- map view (static demo similar to index) -->
+      <div class="view-container" id="map-view">
+        <div class="map-card">
+          <div class="map-background">
+            <img src="assets/map.png" alt="Running track background" class="map-image">
+          </div>
+          <div class="runners-overlay">
+            <div class="runner-pin" data-runner="1" style="left: 25%; top: 25%;">
+              <div class="pin-avatar"><img src="assets/sarah.png" alt="Sarah Chen" class="avatar-img"></div>
+              <div class="pin-badge badge-success">Intermediate</div>
+            </div>
+            <div class="runner-pin" data-runner="2" style="left: 65%; top: 35%;">
+              <div class="pin-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" alt="Mike" class="avatar-img"></div>
+              <div class="pin-badge badge-warning">Advanced</div>
+            </div>
+            <div class="runner-pin" data-runner="3" style="left: 45%; top: 55%;">
+              <div class="pin-avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face" alt="Emily" class="avatar-img"></div>
+              <div class="pin-badge badge-primary">Beginner</div>
+            </div>
+          </div>
+
+          <!-- overlay rectangular banner (on top of the map) -->
+          <div id="inlineRequestNotice" class="inline-notice" role="region" aria-live="polite" aria-label="Run request notification">
+            <div class="notice-header">
+              <div class="header-left"><i data-lucide="bell" class="icon"></i><span>New Running Request!</span></div>
+              <button class="notice-close" onclick="dismissRequest()" aria-label="Close"><i data-lucide="x" class="icon"></i></button>
+            </div>
+            <div class="notice-content">
+              <div class="request-info">
+                <img id="reqAvatar" class="req-avatar" src="assets/sarah.png" alt="Runner">
+                <div class="req-main">
+                  <div class="req-name" id="reqName">Runner Name</div>
+                  <span class="badge badge-success req-level" id="reqLevel">Intermediate</span>
+                </div>
+              </div>
+              <ul class="req-meta">
+                <li><i data-lucide="target" class="icon"></i><span id="reqPace">5:30 min/km</span></li>
+                <li><i data-lucide="map-pin" class="icon"></i><span id="reqDistance">200m away</span></li>
+                <li><i data-lucide="clock" class="icon"></i><span id="reqTime">Just now</span></li>
+              </ul>
+              <div class="req-message" id="reqMsg">Would like to run together tomorrow morning!</div>
+              <div class="notice-actions" style="justify-content: space-between;">
+                <button class="btn btn-decline" onclick="dismissRequest()"><i data-lucide="x" class="icon"></i> Decline</button>
+                <button class="btn btn-accept" onclick="acceptRequest()"><i data-lucide="check" class="icon"></i> Match</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- list view (static demo similar to index) -->
+      <div class="view-container hidden" id="list-view">
+        <div class="list-header">
+          <h2 class="list-title">Nearby Runners</h2>
+          <div class="list-count badge badge-primary">7 runners</div>
+        </div>
+        <div class="runners-list">
+          <div class="runner-card" data-runner="1">
+            <div class="runner-avatar"><img src="assets/sarah.png" alt="Sarah Chen" class="avatar-img"></div>
+            <div class="runner-info">
+              <div class="runner-header"><h3 class="runner-name">Sarah Chen</h3><div class="runner-badge badge badge-success">Intermediate</div></div>
+            </div>
+          </div>
+          <div class="runner-card" data-runner="2">
+            <div class="runner-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" alt="Mike" class="avatar-img"></div>
+            <div class="runner-info">
+              <div class="runner-header"><h3 class="runner-name">Mike Rodriguez</h3><div class="runner-badge badge badge-warning">Advanced</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/index.js"></script>
+  <script src="js/notifications.js"></script>
+</body>
+</html>
