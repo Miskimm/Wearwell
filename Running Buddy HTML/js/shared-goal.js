@@ -1,4 +1,4 @@
-// Shared Goal Page JavaScript - Shared goal page logic
+// Shared Goal Page JavaScript - 共同目标页面逻辑
 
 // page init
 document.addEventListener('DOMContentLoaded', function() {
@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeSharedGoalPage();
     initializeInlineGoalSetting();
     
-    // backup initialization for slider event listeners
+    // 添加滑杆事件监听器的备用初始化
     setTimeout(() => {
         setupSliderEventListeners();
     }, 100);
@@ -405,7 +405,7 @@ function loadGoalSettings() {
         console.error('Error loading goal settings:', error);
     }
     
-    // return default settings
+    // 返回默认设置
     return {
         type: 'calories',
         value: 2250,
@@ -467,7 +467,7 @@ function autoSaveGoalSettings() {
     localStorage.setItem('sharedGoalSettings', JSON.stringify(goalSettings));
 }
 
-// setup slider event listeners
+// 设置滑杆事件监听器
 function setupSliderEventListeners() {
     console.log('Setting up slider event listeners');
     
@@ -480,11 +480,11 @@ function setupSliderEventListeners() {
     });
     
     if (inlineSlider) {
-        // remove previous event listeners (if any)
+        // 移除之前的事件监听器（如果有的话）
         inlineSlider.removeEventListener('input', handleSliderInput);
         inlineSlider.removeEventListener('change', autoSaveGoalSettings);
         
-        // add new event listener
+        // 添加新的事件监听器
         inlineSlider.addEventListener('input', handleSliderInput);
         inlineSlider.addEventListener('change', autoSaveGoalSettings);
         
@@ -497,7 +497,7 @@ function setupSliderEventListeners() {
     }
 }
 
-// handle slider input event
+// 处理滑杆输入事件
 function handleSliderInput(event) {
     console.log('Slider input event triggered:', event.target.value);
     const value = event.target.value;

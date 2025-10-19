@@ -18,15 +18,6 @@ function initializeIndexPage() {
     
     // init map controls
     initializeMapControls();
-    
-    // check if need to auto switch to list view
-    const returnToListView = sessionStorage.getItem('returnToListView');
-    if (returnToListView === 'true') {
-        // clear flag
-        sessionStorage.removeItem('returnToListView');
-        // switch to list view
-        switchToListView();
-    }
 }
 
 // init view toggle
@@ -39,11 +30,11 @@ function initializeViewToggle() {
         button.addEventListener('click', function() {
             const view = this.getAttribute('data-view');
             
-            // update button state
+            // 更新按钮状态
             toggleButtons.forEach(btn => btn.classList.remove('active'));
             this.classList.add('active');
             
-            // switch view
+            // 切换视图
             if (view === 'map') {
                 mapView.classList.remove('hidden');
                 listView.classList.add('hidden');
@@ -55,7 +46,7 @@ function initializeViewToggle() {
     });
 }
 
-// initialize runner pins
+// 初始化跑步者标记
 function initializeRunnerPins() {
     const runnerPins = document.querySelectorAll('.runner-pin');
     
@@ -65,7 +56,7 @@ function initializeRunnerPins() {
             viewRunnerProfile(runnerId);
         });
         
-        // add hover effect
+        // 添加悬停效果
         pin.addEventListener('mouseenter', function() {
             this.style.transform = 'translate(-50%, -50%) scale(1.1)';
         });
@@ -76,7 +67,7 @@ function initializeRunnerPins() {
     });
 }
 
-// initialize list view
+// 初始化列表视图
 function initializeListView() {
     const runnerCards = document.querySelectorAll('.runner-card');
     
@@ -86,7 +77,7 @@ function initializeListView() {
             viewRunnerProfile(runnerId);
         });
         
-        // add hover effect
+        // 添加悬停效果
         card.addEventListener('mouseenter', function() {
             this.style.transform = 'translateY(-2px)';
             this.style.boxShadow = 'var(--shadow-md)';
@@ -99,13 +90,13 @@ function initializeListView() {
     });
 }
 
-// initialize map controls
+// 初始化地图控制
 function initializeMapControls() {
     const switchToListBtn = document.getElementById('switch-to-list');
     
     if (switchToListBtn) {
         switchToListBtn.addEventListener('click', function() {
-            // switch to list view
+            // 切换到列表视图
             const listButton = document.querySelector('[data-view="list"]');
             if (listButton) {
                 listButton.click();
@@ -114,26 +105,16 @@ function initializeMapControls() {
     }
 }
 
-// view runner profile
+// 查看跑步者资料
 function viewRunnerProfile(runnerId) {
-    // save current runner ID to sessionStorage
+    // 保存当前跑步者ID到sessionStorage
     sessionStorage.setItem('selectedRunner', runnerId);
     
-    // record current view (map or list)
-    const mapView = document.getElementById('map-view');
-    const listView = document.getElementById('list-view');
-    
-    if (mapView && !mapView.classList.contains('hidden')) {
-        sessionStorage.setItem('previousView', 'map');
-    } else if (listView && !listView.classList.contains('hidden')) {
-        sessionStorage.setItem('previousView', 'list');
-    }
-    
-    // navigate to profile page
+    // 导航到资料页面
     navigateToPage('profile');
 }
 
-// switch to list view
+// 切换到列表视图
 function switchToListView() {
     const listButton = document.querySelector('[data-view="list"]');
     if (listButton) {
@@ -141,7 +122,7 @@ function switchToListView() {
     }
 }
 
-// switch to map view
+// 切换到地图视图
 function switchToMapView() {
     const mapButton = document.querySelector('[data-view="map"]');
     if (mapButton) {
@@ -149,7 +130,7 @@ function switchToMapView() {
     }
 }
 
-// search runners
+// 搜索跑步者
 function searchRunners(query) {
     const runnerCards = document.querySelectorAll('.runner-card');
     const searchTerm = query.toLowerCase();
@@ -166,7 +147,7 @@ function searchRunners(query) {
     });
 }
 
-// filter runners
+// 筛选跑步者
 function filterRunners(filter) {
     const runnerCards = document.querySelectorAll('.runner-card');
     
@@ -182,7 +163,7 @@ function filterRunners(filter) {
     });
 }
 
-// get runner stats
+// 获取跑步者统计
 function getRunnerStats() {
     const runnerCards = document.querySelectorAll('.runner-card');
     const stats = {
@@ -206,33 +187,33 @@ function getRunnerStats() {
     return stats;
 }
 
-// update runner count
+// 更新跑步者计数
 function updateRunnerCount() {
     const countElement = document.querySelector('.list-count');
     if (countElement) {
         const visibleCards = document.querySelectorAll('.runner-card:not([style*="display: none"])');
-        countElement.textContent = `${visibleCards.length} runners`;
+        countElement.textContent = `${visibleCards.length} 人`;
     }
 }
 
-// show runner details
+// 显示跑步者详情
 function showRunnerDetails(runnerId) {
     const runners = getRunnersData();
     const runner = runners.find(r => r.id === runnerId);
     
     if (runner) {
-        // create details modal
+        // 创建详情模态框
         const modal = createRunnerModal(runner);
         document.body.appendChild(modal);
         
-        // show modal
+        // 显示模态框
         setTimeout(() => {
             modal.classList.add('show');
         }, 100);
     }
 }
 
-// create runner modal
+// 创建跑步者模态框
 function createRunnerModal(runner) {
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
@@ -251,19 +232,19 @@ function createRunnerModal(runner) {
                     </div>
                     <div class="runner-info">
                         <div class="info-item">
-                            <span class="label">Level:</span>
+                            <span class="label">等级:</span>
                             <span class="value">${runner.level}</span>
                         </div>
                         <div class="info-item">
-                            <span class="label">Pace:</span>
+                            <span class="label">配速:</span>
                             <span class="value">${runner.pace}</span>
                         </div>
                         <div class="info-item">
-                            <span class="label">Frequency:</span>
-                            <span class="value">${runner.runsPerWeek} runs/week</span>
+                            <span class="label">频率:</span>
+                            <span class="value">${runner.runsPerWeek}次/周</span>
                         </div>
                         <div class="info-item">
-                            <span class="label">Distance:</span>
+                            <span class="label">距离:</span>
                             <span class="value">${runner.distance}</span>
                         </div>
                     </div>
@@ -271,16 +252,16 @@ function createRunnerModal(runner) {
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" onclick="viewRunnerProfile('${runner.id}')">
-                    View Profile
+                    查看资料
                 </button>
                 <button class="btn btn-outline" onclick="closeModal(this)">
-                    Close
+                    关闭
                 </button>
             </div>
         </div>
     `;
     
-    // initialize icons
+    // 初始化图标
     if (typeof lucide !== 'undefined') {
         lucide.createIcons();
     }
@@ -288,7 +269,7 @@ function createRunnerModal(runner) {
     return modal;
 }
 
-// close modal
+// 关闭模态框
 function closeModal(button) {
     const modal = button.closest('.modal-overlay');
     if (modal) {
@@ -299,7 +280,7 @@ function closeModal(button) {
     }
 }
 
-// export global functions
+// 导出全局函数
 window.viewRunnerProfile = viewRunnerProfile;
 window.switchToListView = switchToListView;
 window.switchToMapView = switchToMapView;

@@ -60,7 +60,6 @@
                     
                     <!-- runner pins -->
                     <div class="runners-overlay">
-                        <!-- Runner markers -->
                         <div class="runner-pin" style="left: 25%; top: 25%;">
                             <div class="pin-avatar">
                                 <img src="assets/sarah.png" alt="Sarah Chen" class="avatar-img">
@@ -82,6 +81,13 @@
                             <div class="pin-badge badge-primary">Beginner</div>
                         </div>
                         
+                        <div class="runner-pin" style="left: 75%; top: 70%;">
+                            <div class="pin-avatar">
+                                <div class="avatar-placeholder">J</div>
+                            </div>
+                            <div class="pin-badge badge-success">Intermediate</div>
+                        </div>
+                        
                         <!-- my location -->
                         <div class="my-location">
                             <div class="location-dot"></div>
@@ -92,15 +98,15 @@
         </main>
     </div>
 
-    <!-- Request Notification Modal (will be shown by JavaScript) -->
+    <!-- Request Notification - Small popup above Sarah -->
     <div id="request-notification" class="request-notification hidden">
         <div class="notification-content">
             <div class="notification-header">
                 <div class="notification-icon">
                     <i data-lucide="bell" class="icon"></i>
                 </div>
-                <h3 class="notification-title">New Running Request!</h3>
-                <button class="notification-close" onclick="closeNotification()">
+                <h3 class="notification-title">New Request!</h3>
+                <button class="notification-close" onclick="closeRequestNotification()">
                     <i data-lucide="x" class="icon"></i>
                 </button>
             </div>
@@ -137,11 +143,11 @@
             </div>
             
             <div class="notification-footer">
-                <button class="btn btn-outline" onclick="declineRequest()">
+                <button class="btn btn-outline" onclick="declineRunRequest()">
                     <i data-lucide="x" class="icon"></i>
                     Decline
                 </button>
-                <button class="btn btn-primary" onclick="acceptRequest()">
+                <button class="btn btn-primary" onclick="acceptRunRequest()">
                     <i data-lucide="check" class="icon"></i>
                     Accept
                 </button>
@@ -152,7 +158,10 @@
     <!-- JavaScript -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <script src="js/app.js"></script>
+    
+    <!-- Request Notification System -->
     <script>
+    (function() {
         // Mock request data
         const mockRequests = [
             {
@@ -211,7 +220,7 @@
         let notificationTimer;
 
         // Show notification with request data
-        function showNotification() {
+        function showRequestNotification() {
             const request = mockRequests[currentRequestIndex];
             const notification = document.getElementById('request-notification');
             
@@ -245,16 +254,16 @@
         }
 
         // Close notification
-        function closeNotification() {
+        window.closeRequestNotification = function() {
             const notification = document.getElementById('request-notification');
             notification.classList.remove('show');
             setTimeout(() => {
                 notification.classList.add('hidden');
             }, 300);
-        }
+        };
 
         // Accept request
-        function acceptRequest() {
+        window.acceptRunRequest = function() {
             const requesterName = document.getElementById('requester-name').textContent;
             
             // Show success feedback
@@ -262,11 +271,11 @@
                 window.showNotification('Accepted! You can now schedule a run with ' + requesterName, 'success');
             }
             
-            closeNotification();
-        }
+            closeRequestNotification();
+        };
 
         // Decline request
-        function declineRequest() {
+        window.declineRunRequest = function() {
             const requesterName = document.getElementById('requester-name').textContent;
             
             // Show info feedback
@@ -274,25 +283,25 @@
                 window.showNotification('Request from ' + requesterName + ' declined', 'info');
             }
             
-            closeNotification();
-        }
+            closeRequestNotification();
+        };
 
         // Start notification timer (every 30 seconds)
         function startNotificationTimer() {
             // Show first notification after 3 seconds
             setTimeout(() => {
-                showNotification();
+                showRequestNotification();
             }, 3000);
             
             // Show subsequent notifications every 30 seconds
             notificationTimer = setInterval(() => {
-                showNotification();
+                showRequestNotification();
             }, 30000);
         }
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Notification page loaded');
+            console.log('Notification page loaded - Request system initialized');
             
             // Initialize icons
             if (typeof lucide !== 'undefined') {
@@ -302,11 +311,7 @@
             // Start notification timer
             startNotificationTimer();
         });
-
-        // Export functions to global scope
-        window.closeNotification = closeNotification;
-        window.acceptRequest = acceptRequest;
-        window.declineRequest = declineRequest;
+    })();
     </script>
 </body>
 </html>
