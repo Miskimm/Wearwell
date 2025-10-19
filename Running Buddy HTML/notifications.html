@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Notifications - Running Buddy</title>
+    <meta name="description" content="Receive running requests from nearby runners">
+    
+    <!-- global styles -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/notifications.css">
+    
+    <!-- icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-info">
+                    <h1 class="header-title">Running Buddy</h1>
+                    <p class="header-subtitle">Find your perfect running partner</p>
+                </div>
+                <div class="header-icon">
+                    <button class="profile-btn" title="Profile">
+                        <div class="user-avatar">
+                            <img src="assets/profile.png" alt="LAN BELL" class="avatar-img">
+                        </div>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- view toggle -->
+            <div class="view-toggle">
+                <button class="toggle-btn active" data-view="map">
+                    <i data-lucide="map-pin" class="icon"></i>
+                    Map
+                </button>
+                <button class="toggle-btn" data-view="list">
+                    <i data-lucide="list" class="icon"></i>
+                    List
+                </button>
+            </div>
+        </header>
+
+        <!-- main content -->
+        <main class="main-content">
+            <!-- map view -->
+            <div class="view-container" id="map-view">
+                <div class="map-card">
+                    <div class="map-background">
+                        <img src="assets/map.png" 
+                             alt="Running track background" class="map-image">
+                    </div>
+                    
+                    <!-- runner pins -->
+                    <div class="runners-overlay">
+                        <!-- Runner markers -->
+                        <div class="runner-pin" style="left: 25%; top: 25%;">
+                            <div class="pin-avatar">
+                                <img src="assets/sarah.png" alt="Sarah Chen" class="avatar-img">
+                            </div>
+                            <div class="pin-badge badge-success">Intermediate</div>
+                        </div>
+                        
+                        <div class="runner-pin" style="left: 65%; top: 35%;">
+                            <div class="pin-avatar">
+                                <div class="avatar-placeholder">M</div>
+                            </div>
+                            <div class="pin-badge badge-warning">Advanced</div>
+                        </div>
+                        
+                        <div class="runner-pin" style="left: 45%; top: 55%;">
+                            <div class="pin-avatar">
+                                <div class="avatar-placeholder">E</div>
+                            </div>
+                            <div class="pin-badge badge-primary">Beginner</div>
+                        </div>
+                        
+                        <!-- my location -->
+                        <div class="my-location">
+                            <div class="location-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Request Notification Modal (will be shown by JavaScript) -->
+    <div id="request-notification" class="request-notification hidden">
+        <div class="notification-content">
+            <div class="notification-header">
+                <div class="notification-icon">
+                    <i data-lucide="bell" class="icon"></i>
+                </div>
+                <h3 class="notification-title">New Running Request!</h3>
+                <button class="notification-close" onclick="closeNotification()">
+                    <i data-lucide="x" class="icon"></i>
+                </button>
+            </div>
+            
+            <div class="notification-body">
+                <div class="requester-info">
+                    <div class="requester-avatar">
+                        <img src="" alt="" class="avatar-img" id="requester-avatar">
+                    </div>
+                    <div class="requester-details">
+                        <h4 class="requester-name" id="requester-name">Sarah Chen</h4>
+                        <span class="requester-level badge" id="requester-level">Intermediate</span>
+                    </div>
+                </div>
+                
+                <div class="request-stats">
+                    <div class="stat-item">
+                        <i data-lucide="target" class="icon"></i>
+                        <span id="requester-pace">5:30 min/km</span>
+                    </div>
+                    <div class="stat-item">
+                        <i data-lucide="map-pin" class="icon"></i>
+                        <span id="requester-distance">200m away</span>
+                    </div>
+                    <div class="stat-item">
+                        <i data-lucide="clock" class="icon"></i>
+                        <span id="request-time">Just now</span>
+                    </div>
+                </div>
+                
+                <div class="request-message">
+                    <p id="request-text">Would like to run together tomorrow morning!</p>
+                </div>
+            </div>
+            
+            <div class="notification-footer">
+                <button class="btn btn-outline" onclick="declineRequest()">
+                    <i data-lucide="x" class="icon"></i>
+                    Decline
+                </button>
+                <button class="btn btn-primary" onclick="acceptRequest()">
+                    <i data-lucide="check" class="icon"></i>
+                    Accept
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Mock request data
+        const mockRequests = [
+            {
+                id: 1,
+                name: 'Sarah Chen',
+                avatar: 'assets/sarah.png',
+                level: 'Intermediate',
+                levelClass: 'badge-success',
+                pace: '5:30 min/km',
+                distance: '200m away',
+                message: 'Would like to run together tomorrow morning!'
+            },
+            {
+                id: 2,
+                name: 'Mike Rodriguez',
+                avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+                level: 'Advanced',
+                levelClass: 'badge-warning',
+                pace: '4:45 min/km',
+                distance: '350m away',
+                message: 'Looking for a running partner for evening runs!'
+            },
+            {
+                id: 3,
+                name: 'Emma Wilson',
+                avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
+                level: 'Beginner',
+                levelClass: 'badge-primary',
+                pace: '6:45 min/km',
+                distance: '500m away',
+                message: 'New to running, would love some company!'
+            },
+            {
+                id: 4,
+                name: 'James Park',
+                avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+                level: 'Intermediate',
+                levelClass: 'badge-success',
+                pace: '5:15 min/km',
+                distance: '750m away',
+                message: 'Want to join for a weekend long run?'
+            },
+            {
+                id: 5,
+                name: 'Lisa Zhang',
+                avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face',
+                level: 'Advanced',
+                levelClass: 'badge-warning',
+                pace: '4:30 min/km',
+                distance: '900m away',
+                message: 'Training for a marathon, need a running buddy!'
+            }
+        ];
+
+        let currentRequestIndex = 0;
+        let notificationTimer;
+
+        // Show notification with request data
+        function showNotification() {
+            const request = mockRequests[currentRequestIndex];
+            const notification = document.getElementById('request-notification');
+            
+            // Update notification content
+            document.getElementById('requester-avatar').src = request.avatar;
+            document.getElementById('requester-avatar').alt = request.name;
+            document.getElementById('requester-name').textContent = request.name;
+            
+            const levelBadge = document.getElementById('requester-level');
+            levelBadge.textContent = request.level;
+            levelBadge.className = `requester-level badge ${request.levelClass}`;
+            
+            document.getElementById('requester-pace').textContent = request.pace;
+            document.getElementById('requester-distance').textContent = request.distance;
+            document.getElementById('request-time').textContent = 'Just now';
+            document.getElementById('request-text').textContent = request.message;
+            
+            // Show notification with animation
+            notification.classList.remove('hidden');
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            // Initialize lucide icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            
+            // Move to next request
+            currentRequestIndex = (currentRequestIndex + 1) % mockRequests.length;
+        }
+
+        // Close notification
+        function closeNotification() {
+            const notification = document.getElementById('request-notification');
+            notification.classList.remove('show');
+            setTimeout(() => {
+                notification.classList.add('hidden');
+            }, 300);
+        }
+
+        // Accept request
+        function acceptRequest() {
+            const requesterName = document.getElementById('requester-name').textContent;
+            
+            // Show success feedback
+            if (typeof window.showNotification === 'function') {
+                window.showNotification('Accepted! You can now schedule a run with ' + requesterName, 'success');
+            }
+            
+            closeNotification();
+        }
+
+        // Decline request
+        function declineRequest() {
+            const requesterName = document.getElementById('requester-name').textContent;
+            
+            // Show info feedback
+            if (typeof window.showNotification === 'function') {
+                window.showNotification('Request from ' + requesterName + ' declined', 'info');
+            }
+            
+            closeNotification();
+        }
+
+        // Start notification timer (every 30 seconds)
+        function startNotificationTimer() {
+            // Show first notification after 3 seconds
+            setTimeout(() => {
+                showNotification();
+            }, 3000);
+            
+            // Show subsequent notifications every 30 seconds
+            notificationTimer = setInterval(() => {
+                showNotification();
+            }, 30000);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Notification page loaded');
+            
+            // Initialize icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            
+            // Start notification timer
+            startNotificationTimer();
+        });
+
+        // Export functions to global scope
+        window.closeNotification = closeNotification;
+        window.acceptRequest = acceptRequest;
+        window.declineRequest = declineRequest;
+    </script>
+</body>
+</html>
+
