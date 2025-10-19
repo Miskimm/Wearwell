@@ -23,6 +23,7 @@
     
     <!-- icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.css">
+    <link rel="stylesheet" href="css/recommendation.css">
 </head>
 <body>
     <div class="app-container">
@@ -78,21 +79,24 @@
                         
                         <div class="runner-pin" data-runner="2" style="left: 65%; top: 35%;">
                             <div class="pin-avatar">
-                                <div class="avatar-placeholder">M</div>
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" 
+                                    alt="Mike" class="avatar-img">
                             </div>
                             <div class="pin-badge badge-warning">Advanced</div>
                         </div>
                         
                         <div class="runner-pin" data-runner="3" style="left: 45%; top: 55%;">
                             <div class="pin-avatar">
-                                <div class="avatar-placeholder">E</div>
+                                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face" 
+                                    alt="Emily" class="avatar-img">
                             </div>
                             <div class="pin-badge badge-primary">Beginner</div>
                         </div>
                         
                         <div class="runner-pin" data-runner="4" style="left: 75%; top: 70%;">
                             <div class="pin-avatar">
-                                <div class="avatar-placeholder">J</div>
+                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
+                                 alt="James" class="avatar-img">
                             </div>
                             <div class="pin-badge badge-success">Intermediate</div>
                         </div>
@@ -100,21 +104,24 @@
                         <!-- Additional runners based on image positions -->
                         <div class="runner-pin" data-runner="5" style="left: 15%; top: 60%;">
                             <div class="pin-avatar">
-                                <div class="avatar-placeholder">L</div>
+                                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face"
+                                 alt="Lisa Zhang" class="avatar-img">
                             </div>
                             <div class="pin-badge badge-warning">Advanced</div>
                         </div>
                         
                         <div class="runner-pin" data-runner="6" style="left: 55%; top: 75%;">
                             <div class="pin-avatar">
-                                <div class="avatar-placeholder">D</div>
+                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&amp;h=150&amp;fit=crop&amp;crop=face" 
+                                    alt="David Kim" class="avatar-img" >
                             </div>
                             <div class="pin-badge badge-primary">Beginner</div>
                         </div>
                         
                         <div class="runner-pin" data-runner="7" style="left: 85%; top: 85%;">
                             <div class="pin-avatar">
-                                <div class="avatar-placeholder">A</div>
+                                <img src="https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=150&amp;h=150&amp;fit=crop&amp;crop=face" 
+                                    alt="Anna Petrov" class="avatar-img">
                             </div>
                             <div class="pin-badge badge-success">Intermediate</div>
                         </div>
@@ -124,7 +131,71 @@
                             <div class="location-dot"></div>
                         </div>
                     </div>
-                    
+                    <button id="recoButton" class="fab-reco" aria-haspopup="dialog" aria-controls="recoDialog">
+  Recommendation
+</button>
+
+<div id="recoOverlay" class="reco-overlay" role="presentation">
+  <div id="recoDialog" class="reco-modal" role="dialog" aria-modal="true" aria-labelledby="recoTitle">
+    <div class="reco-header">
+      <div id="recoTitle" class="reco-title">Recommended Matches</div>
+      <button class="reco-close" id="recoClose" aria-label="Close">×</button>
+    </div>
+
+    <div class="reco-body">
+      <!-- Card 1: Sarah Chen -->
+      <article class="reco-card" data-runner="1">
+        <div class="reco-avatar">
+          <img src="assets/sarah.png" alt="Sarah Chen">
+        </div>
+        <div>
+          <div class="reco-name">Sarah Chen <span class="badge badge-success">Intermediate</span></div>
+          <div class="reco-meta">
+            <span class="reco-chip">🏁 5:30 min/km</span>
+            <span class="reco-chip">▶️ 4 runs/week</span>
+            <span class="reco-chip">📍 200m</span>
+          </div>
+          <div class="reco-actions">
+            <button class="btn-match" data-name="Sarah Chen" aria-pressed="false">Match</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 2: Mike Rodriguez -->
+      <article class="reco-card" data-runner="2">
+        <div class="reco-avatar">M</div>
+        <div>
+          <div class="reco-name">Mike Rodriguez <span class="badge badge-warning">Advanced</span></div>
+          <div class="reco-meta">
+            <span class="reco-chip">🏁 4:45 min/km</span>
+            <span class="reco-chip">▶️ 6 runs/week</span>
+            <span class="reco-chip">📍 350m</span>
+          </div>
+          <div class="reco-actions">
+            <button class="btn-match" data-name="Mike Rodriguez" aria-pressed="false">Match</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 3: Emma Wilson -->
+      <article class="reco-card" data-runner="3">
+        <div class="reco-avatar">E</div>
+        <div>
+          <div class="reco-name">Emma Wilson <span class="badge badge-primary">Beginner</span></div>
+          <div class="reco-meta">
+            <span class="reco-chip">🏁 6:45 min/km</span>
+            <span class="reco-chip">▶️ 3 runs/week</span>
+            <span class="reco-chip">📍 500m</span>
+          </div>
+          <div class="reco-actions">
+            <button class="btn-match" data-name="Emma Wilson" aria-pressed="false">Match</button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>
+
                     <!-- map controls -->
                     <div class="map-controls">
                         <button class="control-btn" id="switch-to-list">
@@ -171,7 +242,8 @@
                     
                     <div class="runner-card" data-runner="2">
                         <div class="runner-avatar">
-                            <div class="avatar-placeholder">M</div>
+                             <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" 
+                                alt="Mike" class="avatar-img">
                         </div>
                         <div class="runner-info">
                             <div class="runner-header">
@@ -197,7 +269,8 @@
                     
                     <div class="runner-card" data-runner="3">
                         <div class="runner-avatar">
-                            <div class="avatar-placeholder">E</div>
+                               <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face" 
+                                    alt="Emily" class="avatar-img">
                         </div>
                         <div class="runner-info">
                             <div class="runner-header">
@@ -223,7 +296,8 @@
                     
                     <div class="runner-card" data-runner="4">
                         <div class="runner-avatar">
-                            <div class="avatar-placeholder">J</div>
+                              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
+                                 alt="James" class="avatar-img">
                         </div>
                         <div class="runner-info">
                             <div class="runner-header">
@@ -249,7 +323,8 @@
                     
                     <div class="runner-card" data-runner="5">
                         <div class="runner-avatar">
-                            <div class="avatar-placeholder">L</div>
+                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face"
+                                 alt="Lisa Zhang" class="avatar-img">
                         </div>
                         <div class="runner-info">
                             <div class="runner-header">
@@ -275,7 +350,8 @@
                     
                     <div class="runner-card" data-runner="6">
                         <div class="runner-avatar">
-                            <div class="avatar-placeholder">D</div>
+                             <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&amp;h=150&amp;fit=crop&amp;crop=face" 
+                                    alt="David Kim" class="avatar-img" >
                         </div>
                         <div class="runner-info">
                             <div class="runner-header">
@@ -301,7 +377,8 @@
                     
                     <div class="runner-card" data-runner="7">
                         <div class="runner-avatar">
-                            <div class="avatar-placeholder">A</div>
+                             <img src="https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=150&amp;h=150&amp;fit=crop&amp;crop=face" 
+                                    alt="Anna Petrov" class="avatar-img">
                         </div>
                         <div class="runner-info">
                             <div class="runner-header">
@@ -334,6 +411,98 @@
     <script src="js/app.js"></script>
     <script src="js/index.js"></script>
     
+    <!-- Geolocation Permission Request -->
+    <script>
+        // 地理位置权限请求
+        function requestGeolocationPermission() {
+            if (!navigator.geolocation) {
+                showLocationAlert('Your browser does not support geolocation', 'warning');
+                return;
+            }
+
+            // 在网页端，每次都直接请求权限，不检查之前的状态
+            // 这样确保每次都需要用户手动开启
+            requestLocation();
+        }
+
+        // 请求位置权限（但不获取真实位置）
+        function requestLocation() {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    // 成功获取位置，但不显示真实位置
+                    showLocationAlert('Location permission granted. Showing nearby runners', 'success');
+                    showMyLocation();
+                    // 这里不更新地图上的位置，保持使用伪坐标点
+                },
+                function(error) {
+                    let message = '';
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            message = 'Location permission denied. Please allow location access in browser settings';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            message = 'Location information unavailable';
+                            break;
+                        case error.TIMEOUT:
+                            message = 'Location request timeout';
+                            break;
+                        default:
+                            message = 'Unknown error occurred while getting location';
+                            break;
+                    }
+                    showLocationAlert(message, 'error');
+                },
+                {
+                    enableHighAccuracy: false,
+                    timeout: 10000,
+                    maximumAge: 60000
+                }
+            );
+        }
+
+        // 显示我的位置（伪坐标点）
+        function showMyLocation() {
+            const myLocation = document.querySelector('.my-location');
+            if (myLocation) {
+                myLocation.style.display = 'block';
+                myLocation.style.setProperty('display', 'block', 'important');
+                console.log('My location should be visible now');
+            } else {
+                console.log('My location element not found');
+            }
+        }
+
+        // 显示位置提示
+        function showLocationAlert(message, type) {
+            // 创建提示元素
+            const alert = document.createElement('div');
+            alert.className = `location-alert alert-${type}`;
+            alert.innerHTML = `
+                <div class="alert-content">
+                    <i class="alert-icon">${type === 'success' ? '✓' : type === 'warning' ? '⚠' : '✗'}</i>
+                    <span class="alert-message">${message}</span>
+                    <button class="alert-close" onclick="this.parentElement.parentElement.remove()">×</button>
+                </div>
+            `;
+            
+            // 添加到页面
+            document.body.appendChild(alert);
+            
+            // 自动移除
+            setTimeout(() => {
+                if (alert.parentElement) {
+                    alert.remove();
+                }
+            }, 5000);
+        }
+
+        // 页面加载完成后请求位置权限
+        document.addEventListener('DOMContentLoaded', function() {
+            // 延迟2秒后请求位置权限，给用户时间看到页面
+            setTimeout(requestGeolocationPermission, 2000);
+        });
+    </script>
+
     <!-- PWA Service Worker -->
     <script>
         if ('serviceWorker' in navigator) {
@@ -348,5 +517,42 @@
             });
         }
     </script>
+
+<!-- Recommendation -->
+<script>
+(function () {
+  const btn = document.getElementById('recoButton');
+  const overlay = document.getElementById('recoOverlay');
+  const dialog = document.getElementById('recoDialog');
+  const closeBtn = document.getElementById('recoClose');
+
+  // ✅ 只锁定地图容器滚动
+  const mapCard = btn.closest('.map-card');
+
+  function openModal() {
+    overlay.classList.add('show');
+    if (mapCard) mapCard.style.overflow = 'hidden';  // ✅
+    dialog.focus();
+  }
+  function closeModal() {
+    overlay.classList.remove('show');
+    if (mapCard) mapCard.style.overflow = '';        // ✅
+    btn.focus();
+  }
+
+  btn.addEventListener('click', openModal);
+  closeBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.classList.contains('show')) closeModal();
+  });
+
+  // “Match” 按钮逻辑保持不变…
+})();
+</script>
+<!-- 🔼 End Recommendation UI -->
+
 </body>
 </html>

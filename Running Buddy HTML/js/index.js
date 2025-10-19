@@ -18,6 +18,15 @@ function initializeIndexPage() {
     
     // init map controls
     initializeMapControls();
+    
+    // 检查是否需要自动切换到列表视图
+    const returnToListView = sessionStorage.getItem('returnToListView');
+    if (returnToListView === 'true') {
+        // 清除标记
+        sessionStorage.removeItem('returnToListView');
+        // 切换到列表视图
+        switchToListView();
+    }
 }
 
 // init view toggle

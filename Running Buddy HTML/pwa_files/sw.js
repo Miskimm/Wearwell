@@ -1,11 +1,10 @@
 // Service Worker for Running Buddy PWA
 
-const CACHE_NAME = 'running-buddy-v1';
+const CACHE_NAME = 'running-buddy-v2';
 const urlsToCache = [
   '/',
   '/index.html',
   '/login.html',
-  '/runners.html',
   '/profile.html',
   '/match.html',
   '/schedule.html',
@@ -16,14 +15,12 @@ const urlsToCache = [
   '/css/components.css',
   '/css/index.css',
   '/css/login.css',
-  '/css/runners.css',
   '/css/profile.css',
   '/css/match.css',
   '/css/schedule.css',
   '/js/app.js',
   '/js/index.js',
   '/js/login.js',
-  '/js/runners.js',
   '/js/profile.js',
   '/js/match.js',
   '/js/schedule.js',
