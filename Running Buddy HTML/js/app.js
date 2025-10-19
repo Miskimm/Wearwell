@@ -96,15 +96,18 @@ function goBack() {
             // 如果是查看当前用户资料或没有选择特定跑步者，返回地图页面
             navigateToPage('index');
         } else {
-            // 如果是查看其他跑步者资料，返回到跑步者列表页面
-            navigateToPage('runners');
+            // 如果是查看其他跑步者资料，返回到首页列表视图
+            // 标记需要显示列表视图
+            sessionStorage.setItem('returnToListView', 'true');
+            navigateToPage('index');
         }
     } else if (currentPage === 'shared-goal') {
         // 从共同目标页面返回地图页面
         navigateToPage('index');
     } else if (currentPage === 'match') {
-        // 从匹配页面返回跑步者列表
-        navigateToPage('runners');
+        // 从匹配页面返回首页列表视图
+        sessionStorage.setItem('returnToListView', 'true');
+        navigateToPage('index');
     } else if (currentPage === 'schedule') {
         // 从日程页面返回匹配页面
         navigateToPage('match');
@@ -123,7 +126,6 @@ function goBack() {
 function navigateToPage(page) {
     const pages = {
         'index': 'index.html',
-        'runners': 'runners.html',
         'profile': 'profile.html',
         'match': 'match.html',
         'schedule': 'schedule.html',

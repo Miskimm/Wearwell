@@ -73,9 +73,8 @@ Running Buddy HTML/
 
 | 页面 | 文件 | 说明 |
 |------|------|------|
-| 首页 | `index.html` | 地图/列表视图，查看附近跑步者 |
+| 首页 | `index.html` | 地图/列表双视图，查看附近跑步者 |
 | 登录 | `login.html` | 用户登录和注册 |
-| 跑步者列表 | `runners.html` | 浏览所有跑步者 |
 | 个人资料 | `profile.html` | 查看跑步者详细信息 |
 | 匹配确认 | `match.html` | 确认匹配的跑步伙伴 |
 | 日程安排 | `schedule.html` | 安排跑步时间 |
