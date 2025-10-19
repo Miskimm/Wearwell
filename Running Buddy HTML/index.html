@@ -198,9 +198,9 @@
 
                     <!-- map controls -->
                     <div class="map-controls">
-                        <button class="control-btn" id="switch-to-list">
-                            <i data-lucide="list" class="icon"></i>
-                        </button>
+                         <button class="control-btn" id="open-vitals" aria-haspopup="dialog" aria-controls="vitalsDialog" title="Vitals">
+    <i data-lucide="gauge" class="icon"></i>
+  </button>
                     </div>
                 </div>
             </div>
@@ -579,6 +579,94 @@
 })();
 </script>
 <!-- 🔼 End Recommendation UI -->
+
+<script>
+(function () {
+  const btnId = 'open-vitals';
+  const overlayId = 'vitalsOverlay';
+  const dialogId = 'vitalsDialog';
+
+  // 可能你的其它脚本已经渲染过 lucide，这里再调用一次是幂等的
+  if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+
+  function ensureModal() {
+    if (document.getElementById(overlayId)) return;
+
+    // 遮罩层
+    const overlay = document.createElement('div');
+    overlay.id = overlayId;
+    overlay.setAttribute('role', 'presentation');
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.42);display:none;align-items:center;justify-content:center;z-index:10000;';
+
+    // 弹窗
+    const dialog = document.createElement('div');
+    dialog.id = dialogId;
+    dialog.setAttribute('role', 'dialog');
+    dialog.setAttribute('aria-modal', 'true');
+    dialog.setAttribute('aria-label', 'Vitals');
+    dialog.style.cssText = 'background:#fff;border-radius:12px;padding:16px 18px;width:360px;max-width:92vw;box-shadow:0 12px 40px rgba(0,0,0,.2);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;';
+
+    dialog.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <div style="display:flex;align-items:center;gap:8px;font-weight:600;">
+          <i data-lucide="activity"></i><span>Vitals</span>
+        </div>
+        <button id="vitalsClose" aria-label="Close" title="Close" style="border:none;background:transparent;cursor:pointer;padding:6px;border-radius:8px;">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <table style="width:100%;border-collapse:collapse;margin-top:6px;font-size:14px;color:#222;">
+        <tr style="color:#666;font-size:12px;"><th style="text-align:left;padding-bottom:6px;">Metric</th><th style="text-align:left;padding-bottom:6px;">Value</th><th style="text-align:left;padding-bottom:6px;">Unit</th></tr>
+        <tr><td style="padding:4px 0;">Heart Rate</td><td id="hr-value"   style="font-weight:700;">--</td><td>bpm</td></tr>
+        <tr><td style="padding:4px 0;">SpO₂</td>      <td id="spo2-value" style="font-weight:700;">--</td><td>%</td></tr>
+        <tr><td style="padding:4px 0;">Temperature</td><td id="temp-value" style="font-weight:700;">--</td><td>°C</td></tr>
+      </table>
+    `;
+
+    overlay.appendChild(dialog);
+    document.body.appendChild(overlay);
+
+    // 渲染 modal 里的图标
+    if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+
+    // 关闭逻辑
+    function closeModal() {
+      overlay.style.display = 'none';
+      document.getElementById(btnId)?.focus();
+      document.removeEventListener('keydown', onEsc);
+    }
+    function onEsc(e){ if (e.key === 'Escape') closeModal(); }
+
+    document.getElementById('vitalsClose')?.addEventListener('click', closeModal);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+
+    // 暴露给外部（可选）
+    window.closeVitalsModal = closeModal;
+  }
+
+  function openModal() {
+    ensureModal();
+    const overlay = document.getElementById(overlayId);
+    overlay.style.display = 'flex';
+    function onEsc(e){ if (e.key === 'Escape') window.closeVitalsModal?.(); }
+    document.addEventListener('keydown', onEsc);
+  }
+
+  // 绑定新按钮，不影响旧的 switch-to-list
+  document.getElementById(btnId)?.addEventListener('click', openModal);
+
+  // 预留：后续实时数据更新时调用
+  window.updateVitals = function ({ hr, spo2, temp } = {}) {
+    const hrEl = document.getElementById('hr-value');
+    const sEl  = document.getElementById('spo2-value');
+    const tEl  = document.getElementById('temp-value');
+    if (hrEl && typeof hr   !== 'undefined') hrEl.textContent = hr;
+    if (sEl  && typeof spo2 !== 'undefined') sEl.textContent  = spo2;
+    if (tEl  && typeof temp !== 'undefined') tEl.textContent  = temp;
+  };
+})();
+</script>
+
 
 </body>
 </html>
