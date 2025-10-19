@@ -818,6 +818,16 @@ function goToMap() {
     }, 300);
 }
 
+// close any modal overlay safely
+function closeModal(el) {
+  const modal = el?.closest('.modal-overlay');
+  if (!modal) return;
+  modal.classList.remove('show');
+  setTimeout(() => {
+    modal.remove();
+  }, 200);
+}
+
 // cancel request
 function cancelRequest() {
     // clear request data
