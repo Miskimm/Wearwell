@@ -96,10 +96,16 @@ function goBack() {
             // 如果是查看当前用户资料或没有选择特定跑步者，返回地图页面
             navigateToPage('index');
         } else {
-            // 如果是查看其他跑步者资料，返回到首页列表视图
-            // 标记需要显示列表视图
-            sessionStorage.setItem('returnToListView', 'true');
-            navigateToPage('index');
+            // 如果是从推荐进入，则返回地图视图；否则返回列表视图
+            const entrySource = sessionStorage.getItem('entrySource');
+            if (entrySource === 'recommendation') {
+                sessionStorage.removeItem('entrySource');
+                sessionStorage.removeItem('returnToListView');
+                navigateToPage('index');
+            } else {
+                sessionStorage.setItem('returnToListView', 'true');
+                navigateToPage('index');
+            }
         }
     } else if (currentPage === 'shared-goal') {
         // 从共同目标页面返回地图页面
@@ -180,7 +186,7 @@ function getRunnersData() {
         {
             id: '1',
             name: 'Sarah Chen',
-            avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b1e0?w=150&h=150&fit=crop&crop=face',
+            avatar: 'assets/sarah.png',
             level: 'Intermediate',
             pace: '5:30 min/km',
             runsPerWeek: 4,

@@ -163,7 +163,7 @@
 
       <!-- Card 2: Mike Rodriguez -->
       <article class="reco-card" data-runner="2">
-        <div class="reco-avatar">M</div>
+        <div class="reco-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" alt="Mike Rodriguez"></div>
         <div>
           <div class="reco-name">Mike Rodriguez <span class="badge badge-warning">Advanced</span></div>
           <div class="reco-meta">
@@ -179,7 +179,7 @@
 
       <!-- Card 3: Emma Wilson -->
       <article class="reco-card" data-runner="3">
-        <div class="reco-avatar">E</div>
+        <div class="reco-avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face" alt="Emma Wilson"></div>
         <div>
           <div class="reco-name">Emma Wilson <span class="badge badge-primary">Beginner</span></div>
           <div class="reco-meta">
@@ -550,6 +550,32 @@
   });
 
   // “Match” 按钮逻辑保持不变…
+  const matchButtons = dialog.querySelectorAll('.btn-match');
+  matchButtons.forEach((mBtn) => {
+    mBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const card = mBtn.closest('.reco-card');
+      const runnerId = card && card.getAttribute('data-runner');
+      if (!runnerId) return;
+
+      try { sessionStorage.setItem('selectedRunner', runnerId); } catch (_) {}
+      try { sessionStorage.setItem('entrySource', 'recommendation'); } catch (_) {}
+      try { sessionStorage.removeItem('returnToListView'); } catch (_) {}
+
+      mBtn.setAttribute('aria-pressed', 'true');
+      if (typeof showNotification === 'function') {
+        const name = mBtn.getAttribute('data-name') || 'Runner';
+        showNotification(`已匹配：${name}`, 'success');
+      }
+
+      closeModal();
+      if (typeof navigateToPage === 'function') {
+        navigateToPage('profile');
+      } else {
+        window.location.href = 'profile.html';
+      }
+    });
+  });
 })();
 </script>
 <!-- 🔼 End Recommendation UI -->

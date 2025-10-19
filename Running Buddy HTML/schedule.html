@@ -21,7 +21,7 @@
         <!-- header -->
         <header class="header">
             <div class="header-content">
-                <button class="back-btn" onclick="goBack()">
+                <button class="back-btn" onclick="event.preventDefault(); event.stopImmediatePropagation(); confirmCancelFromSchedule()">
                     <i data-lucide="arrow-left" class="icon"></i>
                 </button>
                 <div class="header-info">
@@ -36,7 +36,7 @@
             <div class="partner-card">
                 <div class="partner-info">
                     <div class="partner-avatar">
-                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b1e0?w=150&h=150&fit=crop&crop=face" 
+                        <img src="assets/sarah.png" 
                              alt="Sarah Chen" class="avatar-img">
                     </div>
                     <div class="partner-details">
@@ -163,7 +163,7 @@
                     <i data-lucide="check" class="icon"></i>
                     Confirm Schedule
                 </button>
-                <button class="action-btn btn btn-outline" onclick="goBack()">
+                <button class="action-btn btn btn-outline" onclick="confirmCancelFromSchedule()">
                     <i data-lucide="x" class="icon"></i>
                     Cancel
                 </button>

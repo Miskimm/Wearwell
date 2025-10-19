@@ -18,6 +18,12 @@ function initializeProfilePage() {
     
     // init activity timeline
     initializeActivityTimeline();
+
+    // render pending match for current user
+    renderPendingMatchIfAny();
+
+    // hide actions for current user (no request/send buttons)
+    hideActionsForCurrentUser();
 }
 
 // load runner data
@@ -838,6 +844,122 @@ function cancelRequest() {
     }
 }
 
+// 关闭模态框（profile 专用）
+function closeModal(button) {
+    const modal = button.closest('.modal-overlay');
+    if (modal) {
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.remove();
+        }, 300);
+    }
+}
+
+// 渲染“待开始的匹配伙伴”
+function renderPendingMatchIfAny() {
+    const selectedRunnerId = sessionStorage.getItem('selectedRunner');
+    const isCurrentUser = !selectedRunnerId || selectedRunnerId === 'lanbell';
+    if (!isCurrentUser) return;
+
+    const matchedRunnerId = sessionStorage.getItem('matchedRunner');
+    const requestedRunnerId = sessionStorage.getItem('requestedRunner');
+    const partnerId = matchedRunnerId || requestedRunnerId;
+    if (!partnerId) return;
+
+    const runners = getRunnersData();
+    const partner = runners.find(r => r.id === partnerId);
+    if (!partner) return;
+
+    const statusText = matchedRunnerId ? 'Matched · Not started' : 'Request sent · Waiting';
+
+    const section = document.createElement('section');
+    section.className = 'pending-match-section';
+    section.innerHTML = `
+        <h3 class="section-title">Matched Partner</h3>
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar"><img src="${partner.avatar}" alt="${partner.name}" class="avatar-img"/></div>
+                <div class="profile-info">
+                    <h2 class="profile-name">${partner.name}</h2>
+                    <div class="profile-level"><span class="level-badge badge ${getLevelClass(partner.level)}">${partner.level} Runner</span></div>
+                    <div class="profile-location"><i data-lucide="clock" class="icon"></i><span>${statusText}</span></div>
+                </div>
+            </div>
+            <div class="action-section">
+                <button class="action-btn btn btn-primary" onclick="startRunFromPending()">
+                    <i data-lucide="play" class="icon"></i>
+                    Start Run
+                </button>
+                <button class="action-btn btn btn-outline" onclick="cancelPendingMatch()">
+                    <i data-lucide="x" class="icon"></i>
+                    Cancel Match
+                </button>
+            </div>
+        </div>
+    `;
+
+    // 插入到用户简介（.profile-card）之后
+    const anchor = document.querySelector('.main-content .profile-card');
+    if (anchor && anchor.parentElement) {
+        anchor.parentElement.insertBefore(section, anchor.nextSibling);
+        if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+    }
+}
+
+function startRunFromPending() {
+    const runnerId = sessionStorage.getItem('matchedRunner') || sessionStorage.getItem('requestedRunner');
+    if (!runnerId) { showNotification('No pending partner found', 'error'); return; }
+    sessionStorage.setItem('selectedRunner', runnerId);
+    // 确保 shared-goal 能读取 matchedRunner
+    sessionStorage.setItem('matchedRunner', runnerId);
+    navigateToPage('shared-goal');
+}
+
+function cancelPendingMatch() {
+    const partnerId = sessionStorage.getItem('matchedRunner') || sessionStorage.getItem('requestedRunner');
+    const runners = getRunnersData();
+    const partner = runners.find(r => r.id === partnerId);
+    const name = partner?.name || 'this partner';
+
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Cancel Match?</h3>
+                <button class="modal-close" onclick="closeModal(this)"><i data-lucide="x" class="icon"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to cancel the match with <strong>${name}</strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal(this)">Keep</button>
+                <button class="btn btn-primary" onclick="confirmCancelPending(this)">Cancel Match</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+    setTimeout(() => modal.classList.add('show'), 50);
+}
+
+function confirmCancelPending(button) {
+    closeModal(button);
+    sessionStorage.removeItem('matchedRunner');
+    sessionStorage.removeItem('requestedRunner');
+    sessionStorage.removeItem('requestedRunnerName');
+    const section = document.querySelector('.pending-match-section');
+    if (section && section.parentElement) section.parentElement.removeChild(section);
+    showNotification('Match cancelled', 'info');
+}
+
+function hideActionsForCurrentUser() {
+    const selectedRunnerId = sessionStorage.getItem('selectedRunner');
+    const isCurrentUser = !selectedRunnerId || selectedRunnerId === 'lanbell';
+    if (!isCurrentUser) return;
+    document.querySelectorAll('.main-content > .action-section').forEach(el => el.remove());
+}
+
 // export global functions
 window.sendMessage = sendMessage;
 window.requestRunTogether = requestRunTogether;
@@ -851,3 +973,7 @@ window.sendMessageToRunner = sendMessageToRunner;
 window.confirmRunRequest = confirmRunRequest;
 window.goToMap = goToMap;
 window.cancelRequest = cancelRequest;
+window.startRunFromPending = startRunFromPending;
+window.cancelPendingMatch = cancelPendingMatch;
+window.confirmCancelPending = confirmCancelPending;
+window.hideActionsForCurrentUser = hideActionsForCurrentUser;

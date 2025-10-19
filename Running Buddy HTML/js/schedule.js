@@ -165,10 +165,11 @@ function initializeActionButtons() {
     }
     
     // cancel button
-    const cancelBtn = document.querySelector('.action-btn[onclick*="goBack"]');
+    const cancelBtn = document.querySelector('.action-btn[onclick*="confirmCancelFromSchedule"]');
     if (cancelBtn) {
-        cancelBtn.addEventListener('click', function() {
-            goBack();
+        cancelBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            confirmCancelFromSchedule();
         });
     }
 }
@@ -487,6 +488,54 @@ function clearForm() {
     showNotification('Form cleared', 'info');
 }
 
+// confirm cancel from schedule
+function confirmCancelFromSchedule() {
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Cancel Match?</h3>
+                <button class="modal-close" onclick="closeModal(this)">
+                    <i data-lucide="x" class="icon"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Cancel this scheduling and return to home?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal(this)">Keep Editing</button>
+                <button class="btn btn-primary" onclick="cancelAndReturnHome(this)">Cancel and Return</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+    setTimeout(() => modal.classList.add('show'), 50);
+}
+
+function cancelAndReturnHome(button) {
+    // close modal first
+    closeModal(button);
+    // clear schedule and match temp state
+    sessionStorage.removeItem('scheduleForm');
+    sessionStorage.removeItem('scheduleData');
+    sessionStorage.removeItem('matchedRunner');
+    sessionStorage.removeItem('requestedRunner');
+    sessionStorage.removeItem('requestedRunnerName');
+    // go home (map)
+    setTimeout(() => navigateToPage('index'), 150);
+}
+
+// simple closeModal for schedule page
+function closeModal(button) {
+    const modal = button.closest('.modal-overlay');
+    if (modal) {
+        modal.classList.remove('show');
+        setTimeout(() => modal.remove(), 200);
+    }
+}
+
 // export global functions
 window.submitSchedule = submitSchedule;
 window.previewSchedule = previewSchedule;
@@ -494,3 +543,5 @@ window.clearForm = clearForm;
 window.closeModal = closeModal;
 window.startRunning = startRunning;
 window.goToMapFromSchedule = goToMapFromSchedule;
+window.confirmCancelFromSchedule = confirmCancelFromSchedule;
+window.cancelAndReturnHome = cancelAndReturnHome;
