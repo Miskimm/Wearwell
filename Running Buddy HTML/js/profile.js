@@ -25,11 +25,11 @@ function loadRunnerData() {
     // get selected runner ID from sessionStorage
     const selectedRunnerId = sessionStorage.getItem('selectedRunner');
     
-    // 如果是点击头像进入的，显示当前用户（LAN BELL）
+    // if entered by clicking avatar, show current user (LAN BELL)
     const isCurrentUser = !selectedRunnerId || selectedRunnerId === 'lanbell';
     
     if (isCurrentUser) {
-        // 显示当前用户 LAN BELL 的资料
+        // show current user LAN BELL's profile
         const currentUserProfile = {
             id: 'lanbell',
             name: 'LAN BELL',

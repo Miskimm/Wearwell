@@ -51,28 +51,28 @@ function getCurrentPage() {
     return filename || 'index';
 }
 
-// 初始化导航
+// initialize navigation
 function initializeNavigation() {
-    // 处理返回按钮
+    // handle back buttons
     const backButtons = document.querySelectorAll('.back-btn');
     backButtons.forEach(button => {
         button.addEventListener('click', handleBackNavigation);
     });
     
-    // 处理链接点击
+    // handle link clicks
     const links = document.querySelectorAll('a[href]');
     links.forEach(link => {
         link.addEventListener('click', handleLinkClick);
     });
 }
 
-// 处理返回导航
+// handle back navigation
 function handleBackNavigation(event) {
     event.preventDefault();
     goBack();
 }
 
-// 处理链接点击
+// handle link click
 function handleLinkClick(event) {
     const href = event.target.getAttribute('href');
     if (href && href.startsWith('#')) {
@@ -82,47 +82,56 @@ function handleLinkClick(event) {
     }
 }
 
-// 返回上一页
+// go back to previous page
 function goBack() {
     const currentPage = getCurrentPage();
     
-    // 根据当前页面和来源智能导航
+    // smart navigation based on current page and source
     if (currentPage === 'profile') {
-        // 如果是个人资料页面，检查是如何进入的
+        // if profile page, check how it was entered
         const selectedRunner = sessionStorage.getItem('selectedRunner');
         const currentUser = sessionStorage.getItem('currentUser');
+        const previousView = sessionStorage.getItem('previousView');
         
         if (currentUser === 'lanbell' || !selectedRunner) {
-            // 如果是查看当前用户资料或没有选择特定跑步者，返回地图页面
+            // if viewing current user profile or no runner selected, return to map
+            sessionStorage.removeItem('previousView');
             navigateToPage('index');
         } else {
-            // 如果是查看其他跑步者资料，返回到首页列表视图
-            // 标记需要显示列表视图
-            sessionStorage.setItem('returnToListView', 'true');
+            // return based on previous view
+            if (previousView === 'list') {
+                // if entered from list view, return to list view
+                sessionStorage.setItem('returnToListView', 'true');
+            } else {
+                // if entered from map view, return to map view (default)
+                sessionStorage.removeItem('returnToListView');
+            }
+            // clear previous view record
+            sessionStorage.removeItem('previousView');
             navigateToPage('index');
         }
     } else if (currentPage === 'shared-goal') {
-        // 从共同目标页面返回地图页面
+        // from shared goal page, return to map
         navigateToPage('index');
     } else if (currentPage === 'match') {
-        // 从匹配页面返回首页列表视图
+        // from match page, return to list view
         sessionStorage.setItem('returnToListView', 'true');
         navigateToPage('index');
     } else if (currentPage === 'schedule') {
-        // 从日程页面返回匹配页面
+        // from schedule page, return to match page
         navigateToPage('match');
     } else {
-        // 其他情况使用浏览器历史记录
+        // use browser history for other cases
         if (window.history.length > 1) {
             window.history.back();
         } else {
-            // 如果没有历史记录，返回首页
+            // if no history, return to home
             navigateToPage('index');
         }
     }
 }
 
-// 页面导航
+// navigate to page
 function navigateToPage(page) {
     const pages = {
         'index': 'index.html',
@@ -138,9 +147,9 @@ function navigateToPage(page) {
     }
 }
 
-// 初始化主题
+// initialize theme
 function initializeTheme() {
-    // 检查用户主题偏好
+    // check user theme preference
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
@@ -151,36 +160,36 @@ function initializeTheme() {
     }
 }
 
-// 初始化数据
+// initialize data
 function initializeData() {
-    // 从URL参数获取数据
+    // get data from URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const runnerId = urlParams.get('runner');
     
     if (runnerId) {
-        // 如果有跑步者ID，加载跑步者数据
+        // if runner ID exists, load runner data
         loadRunnerData(runnerId);
     }
 }
 
-// 加载跑步者数据
+// load runner data
 function loadRunnerData(runnerId) {
     const runners = getRunnersData();
     const runner = runners.find(r => r.id === runnerId);
     
     if (runner) {
-        // 更新页面数据
+        // update page data
         updateRunnerInfo(runner);
     }
 }
 
-// 获取跑步者数据
+// get runners data
 function getRunnersData() {
     return [
         {
             id: '1',
             name: 'Sarah Chen',
-            avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b1e0?w=150&h=150&fit=crop&crop=face',
+            avatar: 'assets/sarah.png',
             level: 'Intermediate',
             pace: '5:30 min/km',
             runsPerWeek: 4,
@@ -250,26 +259,26 @@ function getRunnersData() {
     ];
 }
 
-// 更新跑步者信息
+// update runner info
 function updateRunnerInfo(runner) {
-    // 更新头像
+    // update avatar
     const avatarImg = document.getElementById('profile-avatar');
     if (avatarImg) {
         avatarImg.src = runner.avatar;
         avatarImg.alt = runner.name;
     }
     
-    // 更新姓名
+    // update name
     const nameElement = document.getElementById('profile-name');
     if (nameElement) {
         nameElement.textContent = runner.name;
     }
     
-    // 更新其他信息
+    // update other info
     const levelElement = document.getElementById('profile-level');
     if (levelElement) {
-        const levelText = runner.level === 'Beginner' ? '初级' : 
-                         runner.level === 'Intermediate' ? '中级' : '高级';
+        const levelText = runner.level === 'Beginner' ? 'Beginner' : 
+                         runner.level === 'Intermediate' ? 'Intermediate' : 'Advanced';
         levelElement.textContent = levelText;
     }
     
@@ -289,13 +298,13 @@ function updateRunnerInfo(runner) {
     }
 }
 
-// 显示加载状态
+// show loading state
 function showLoading(element) {
     if (element) {
         element.innerHTML = `
             <div class="loading">
                 <i data-lucide="loader-2" class="icon"></i>
-                <span>加载中...</span>
+                <span>Loading...</span>
             </div>
         `;
         if (typeof lucide !== 'undefined') {
@@ -304,13 +313,13 @@ function showLoading(element) {
     }
 }
 
-// 显示错误状态
+// show error state
 function showError(element, message) {
     if (element) {
         element.innerHTML = `
             <div class="error-state">
                 <i data-lucide="alert-circle" class="icon"></i>
-                <h3>出错了</h3>
+                <h3>Error</h3>
                 <p>${message}</p>
             </div>
         `;
@@ -320,13 +329,13 @@ function showError(element, message) {
     }
 }
 
-// 显示空状态
+// show empty state
 function showEmpty(element, message) {
     if (element) {
         element.innerHTML = `
             <div class="empty-state">
                 <i data-lucide="users" class="icon"></i>
-                <h3>暂无数据</h3>
+                <h3>No Data</h3>
                 <p>${message}</p>
             </div>
         `;
@@ -336,9 +345,9 @@ function showEmpty(element, message) {
     }
 }
 
-// 显示通知
+// show notification
 function showNotification(message, type = 'info') {
-    // 创建通知元素
+    // create notification element
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     notification.innerHTML = `
@@ -348,20 +357,20 @@ function showNotification(message, type = 'info') {
         </div>
     `;
     
-    // 添加到页面
+    // add to page
     document.body.appendChild(notification);
     
-    // 初始化图标
+    // initialize icons
     if (typeof lucide !== 'undefined') {
         lucide.createIcons();
     }
     
-    // 显示动画
+    // show animation
     setTimeout(() => {
         notification.classList.add('show');
     }, 100);
     
-    // 自动隐藏
+    // auto hide
     setTimeout(() => {
         notification.classList.remove('show');
         setTimeout(() => {
@@ -370,7 +379,7 @@ function showNotification(message, type = 'info') {
     }, 3000);
 }
 
-// 格式化时间
+// format time
 function formatTime(date) {
     const now = new Date();
     const diff = now - date;
@@ -379,15 +388,15 @@ function formatTime(date) {
     const days = Math.floor(diff / 86400000);
     
     if (minutes < 60) {
-        return `${minutes}分钟前`;
+        return `${minutes} minutes ago`;
     } else if (hours < 24) {
-        return `${hours}小时前`;
+        return `${hours} hours ago`;
     } else {
-        return `${days}天前`;
+        return `${days} days ago`;
     }
 }
 
-// 格式化距离
+// format distance
 function formatDistance(meters) {
     if (meters < 1000) {
         return `${meters}m`;
@@ -396,7 +405,7 @@ function formatDistance(meters) {
     }
 }
 
-// 防抖函数
+// debounce function
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -409,7 +418,7 @@ function debounce(func, wait) {
     };
 }
 
-// 节流函数
+// throttle function
 function throttle(func, limit) {
     let inThrottle;
     return function() {
@@ -425,7 +434,7 @@ function throttle(func, limit) {
 
 // initialize current user display
 function initializeCurrentUserDisplay() {
-    // 获取当前用户信息（LAN BELL）
+    // get current user info (LAN BELL)
     const currentUser = {
         id: 'lanbell',
         name: 'LAN BELL',
@@ -433,11 +442,11 @@ function initializeCurrentUserDisplay() {
         level: 'Intermediate'
     };
     
-    // 更新所有页面的用户头像
+    // update user avatar in header across all pages
     updateHeaderUserAvatar(currentUser);
 }
 
-// 更新头部用户头像
+// update header user avatar
 function updateHeaderUserAvatar(user) {
     const headerAvatarImg = document.getElementById('header-avatar-img');
     if (headerAvatarImg) {
@@ -446,7 +455,7 @@ function updateHeaderUserAvatar(user) {
         console.log('Updated header avatar for:', user.name);
     }
     
-    // 如果页面有用户头像占位符，也更新它
+    // if page has user avatar placeholder, update it too
     const headerUserAvatar = document.getElementById('header-user-avatar');
     if (headerUserAvatar && !headerAvatarImg) {
         headerUserAvatar.innerHTML = `
@@ -456,17 +465,17 @@ function updateHeaderUserAvatar(user) {
     }
 }
 
-// 查看当前用户资料
+// view current user profile
 function viewCurrentUserProfile() {
-    // 清除其他跑步者选择，设置为当前用户
+    // clear other runner selection, set to current user
     sessionStorage.removeItem('selectedRunner');
     sessionStorage.setItem('currentUser', 'lanbell');
     
-    // 跳转到个人资料页面
+    // navigate to profile page
     window.location.href = 'profile.html';
 }
 
-// 导出全局函数
+// export global functions
 window.goBack = goBack;
 window.navigateToPage = navigateToPage;
 window.showNotification = showNotification;
