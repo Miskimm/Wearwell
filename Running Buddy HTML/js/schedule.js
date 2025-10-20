@@ -233,7 +233,18 @@ function submitSchedule() {
         return;
     }
     
-    // show loading state
+    // small transition on button (loading state)
+    const submitBtn = document.querySelector('.action-btn.btn.btn-primary');
+    let originalBtnHTML = '';
+    if (submitBtn) {
+        originalBtnHTML = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.setAttribute('aria-busy', 'true');
+        submitBtn.innerHTML = '<i data-lucide="loader" class="icon spinning"></i> Sending...';
+        if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+    }
+    
+    // show loading toast
     showNotification('Sending invitation...', 'info');
     
     // simulate API call
@@ -248,13 +259,17 @@ function submitSchedule() {
         
         sessionStorage.setItem('scheduleData', JSON.stringify(scheduleData));
         
-        // show success message
-        showNotification('Invitation sent!', 'success');
+        // restore button visual + show success
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.removeAttribute('aria-busy');
+            submitBtn.innerHTML = originalBtnHTML || '<i data-lucide="check" class="icon"></i> Confirm Schedule';
+            if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+        }
         
-        // navigate to match page after delay
-        setTimeout(() => {
-            navigateToPage('match');
-        }, 2000);
+        // success toast then navigate
+        showNotification('Invitation sent!', 'success');
+        setTimeout(() => { navigateToPage('match'); }, 800);
     }, 1500);
 }
 

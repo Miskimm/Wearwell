@@ -75,11 +75,18 @@ function updateBuddyInfo(runner) {
     }
 }
 
+// 当前活动数据（用于和下方进度同步）
+let currentActivityData = { calories: 0, distance: 0, steps: 0 };
+
 // initialize activity stats
 function initializeActivityStats() {
     // generate random activity data
     const calories = Math.floor(Math.random() * 2000) + 1000; // 1000-3000 kcal
     const distance = Math.floor(Math.random() * 5000) + 2000; // 2000-7000m
+    const steps = Math.floor(Math.random() * 8000) + 5000;   // 5000-13000 steps
+
+    // 保存到全局，供下方进度计算使用
+    currentActivityData = { calories, distance, steps };
     
     // update calories burned
     const caloriesElement = document.getElementById('calories-burned');
@@ -91,6 +98,12 @@ function initializeActivityStats() {
     const distanceElement = document.getElementById('distance-covered');
     if (distanceElement) {
         distanceElement.textContent = distance;
+    }
+
+    // update steps count
+    const stepsElement = document.getElementById('steps-count');
+    if (stepsElement) {
+        stepsElement.textContent = steps;
     }
 }
 
@@ -203,11 +216,8 @@ function goToMap() {
 
 // go back
 function goBack() {
-    if (window.history.length > 1) {
-        window.history.back();
-    } else {
-        navigateToPage('match');
-    }
+    // 跑步进行中禁止返回上一页，只允许“End Run”或“Go to Map”
+    navigateToPage('index');
 }
 
 // close modal
@@ -370,12 +380,12 @@ function updateProgressDisplay(goalValue) {
 
 // get current activity (simulate)
 function getCurrentActivity() {
-    // simulate current activity based on goal type
+    // 使用与顶部展示相同的数据，确保协同
     const goalType = document.getElementById('goal-type-select')?.value || 'calories';
     const activityData = {
-        calories: 1800,
-        steps: 8500,
-        distance: 3500,
+        calories: currentActivityData.calories || 1800,
+        steps: currentActivityData.steps || 8500,
+        distance: currentActivityData.distance || 3500,
         duration: 45
     };
     return activityData[goalType] || 1800;
@@ -386,8 +396,8 @@ function getGoalTypeConfig(goalType) {
     const configs = {
         calories: { min: 1000, max: 10000, step: 50, defaultValue: 2250, unit: 'kcal' },
         steps: { min: 1000, max: 50000, step: 100, defaultValue: 10000, unit: 'steps' },
-        distance: { min: 1000, max: 50000, step: 100, defaultValue: 5000, unit: 'm' },
-        duration: { min: 15, max: 300, step: 5, defaultValue: 60, unit: 'min' }
+        distance: { min: 1000, max: 20000, step: 100, defaultValue: 5000, unit: 'm' },
+        duration: { min: 15, max: 150, step: 5, defaultValue: 60, unit: 'min' }
     };
     return configs[goalType] || configs.calories;
 }
