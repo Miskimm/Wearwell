@@ -24,6 +24,11 @@ function initializeProfilePage() {
 
     // hide actions for current user (no request/send buttons)
     hideActionsForCurrentUser();
+
+    // render privacy toggle only for current user (LAN BELL)
+    if (isCurrentUserProfile()) {
+        renderPrivacyToggle();
+    }
 }
 
 // load runner data
@@ -958,6 +963,76 @@ function hideActionsForCurrentUser() {
     const isCurrentUser = !selectedRunnerId || selectedRunnerId === 'lanbell';
     if (!isCurrentUser) return;
     document.querySelectorAll('.main-content > .action-section').forEach(el => el.remove());
+}
+
+// ----- Privacy toggle (location sharing) -----
+function renderPrivacyToggle() {
+    const main = document.querySelector('.main-content');
+    if (!main) return;
+    const wrapper = document.createElement('section');
+    wrapper.className = 'preferences-section';
+    const locChecked = localStorage.getItem('shareLocation') !== '0';
+    const dataChecked = localStorage.getItem('shareData') !== '0';
+    wrapper.innerHTML = `
+      <h3 class="section-title">Privacy</h3>
+      <div class="profile-card" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+          <div>
+            <div style="font-weight:600;">Share my location on the map</div>
+            <div style="color:var(--muted-foreground);font-size:14px;">Turn off to hide your position on Home.</div>
+          </div>
+          <label class="switch">
+            <input id="share-location-toggle" type="checkbox" ${locChecked ? 'checked' : ''}>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+          <div>
+            <div style="font-weight:600;">Share my activity data</div>
+            <div style="color:var(--muted-foreground);font-size:14px;">Turn off to keep pace and stats private.</div>
+          </div>
+          <label class="switch">
+            <input id="share-data-toggle" type="checkbox" ${dataChecked ? 'checked' : ''}>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>`;
+    main.appendChild(wrapper);
+
+    // minimal switch styles (reuse existing vars)
+    const style = document.createElement('style');
+    style.textContent = `.switch{position:relative;display:inline-block;width:46px;height:26px}
+    .switch input{opacity:0;width:0;height:0}
+    .slider{position:absolute;cursor:pointer;inset:0;background:#e5e7eb;border-radius:9999px;transition:.2s}
+    .slider:before{position:absolute;content:"";height:20px;width:20px;left:3px;top:3px;background:white;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+    input:checked + .slider{background:#10b981}
+    input:checked + .slider:before{transform:translateX(20px)}`;
+    document.head.appendChild(style);
+
+    document.getElementById('share-location-toggle')?.addEventListener('change', (e)=>{
+        const on = e.target.checked;
+        try {
+            localStorage.setItem('shareLocation', on ? '1' : '0');
+            sessionStorage.setItem('privacyUpdated', '1');
+        } catch (err) {}
+        showNotification(on ? 'Location sharing enabled' : 'Location sharing disabled', 'success');
+    });
+
+    document.getElementById('share-data-toggle')?.addEventListener('change', (e)=>{
+        const on = e.target.checked;
+        try {
+            localStorage.setItem('shareData', on ? '1' : '0');
+            sessionStorage.setItem('privacyUpdated', '1');
+        } catch (err) {}
+        showNotification(on ? 'Data sharing enabled' : 'Data sharing disabled', 'success');
+    });
+}
+
+// helper: detect if viewing current user's (LAN BELL) profile
+function isCurrentUserProfile() {
+    const selectedRunnerId = sessionStorage.getItem('selectedRunner');
+    return !selectedRunnerId || selectedRunnerId === 'lanbell';
 }
 
 // export global functions

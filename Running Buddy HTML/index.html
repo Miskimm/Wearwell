@@ -419,12 +419,70 @@
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
         }
 
-        // 地理位置权限请求
+        // 隐藏我的位置（用于用户选择不展示的情况）
+        function hideMyLocation() {
+            const myLocation = document.querySelector('.my-location');
+            if (myLocation) {
+                myLocation.style.display = 'none';
+                myLocation.style.setProperty('display', 'none', 'important');
+                console.log('My location has been hidden');
+            }
+        }
+
+        // 询问是否展示定位（只影响本次会话，刷新重置）
+        function showLocationChoiceDialog() {
+            const overlay = document.createElement('div');
+            overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.42);display:flex;align-items:center;justify-content:center;z-index:10000;';
+
+            const dialog = document.createElement('div');
+            dialog.style.cssText = 'background:#fff;border-radius:12px;padding:16px 18px;width:360px;max-width:92vw;box-shadow:0 12px 40px rgba(0,0,0,.2);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;';
+            dialog.innerHTML = `
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;font-weight:600;">
+                <span style="font-size:16px;">Show your location on the map?</span>
+              </div>
+              <p style="margin:0 0 12px 0;color:#444;font-size:14px;">You can change this by refreshing. Your choice won't be stored.</p>
+              <div style="display:flex;gap:10px;justify-content:flex-end;">
+                <button id="loc-decline" style="padding:8px 12px;border-radius:8px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;">Hide</button>
+                <button id="loc-accept" style="padding:8px 12px;border-radius:8px;border:none;background:#10b981;color:#fff;cursor:pointer;">Show</button>
+              </div>
+            `;
+            overlay.appendChild(dialog);
+            document.body.appendChild(overlay);
+
+            document.getElementById('loc-accept').addEventListener('click', () => {
+                document.body.removeChild(overlay);
+                try { sessionStorage.setItem('locChoice', 'show'); } catch(e) {}
+                requestGeolocationPermission();
+            });
+            document.getElementById('loc-decline').addEventListener('click', () => {
+                document.body.removeChild(overlay);
+                try { sessionStorage.setItem('locChoice', 'hide'); } catch(e) {}
+                hideMyLocation();
+                showLocationAlert('Location hidden for this session', 'warning');
+            });
+        }
+
+        // 地理位置权限请求（受临时选择与隐私开关影响）
         function requestGeolocationPermission() {
             if (!navigator.geolocation) {
                 showLocationAlert('Your browser does not support geolocation', 'warning');
                 return;
             }
+
+            // 1) Profile 的隐私开关（永久设置，localStorage）
+            try {
+                const share = localStorage.getItem('shareLocation');
+                if (share === '0') { hideMyLocation(); return; }
+            } catch (e) {}
+
+            // 2) 本次会话的临时选择（sessionStorage），刷新即重置
+            try {
+                const choice = sessionStorage.getItem('locChoice');
+                if (choice === 'hide') { hideMyLocation(); return; }
+                if (choice === 'show') {
+                    // 继续往下请求或展示（移动端走伪坐标）
+                }
+            } catch (e) {}
 
             // 移动端：直接使用伪坐标，避免 HTTPS 限制/权限打断演示
             if (isMobileDevice()) {
@@ -510,8 +568,13 @@
 
         // 页面加载完成后请求位置权限/或直接展示伪坐标（移动端）
         document.addEventListener('DOMContentLoaded', function() {
-            // 延迟2秒后请求位置权限，给用户时间看到页面
-            setTimeout(requestGeolocationPermission, 2000);
+            // 有临时选择则用选择；否则弹窗让用户选择（只影响本次会话）
+            const choice = sessionStorage.getItem('locChoice');
+            if (!choice) {
+                showLocationChoiceDialog();
+            } else {
+                setTimeout(requestGeolocationPermission, 300);
+            }
         });
     </script>
 
