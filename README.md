@@ -15,6 +15,7 @@ Key Functions:
 
 This prototype illustrates how social and mobile technologies can foster motivation, accountability, and community engagement in everyday fitness experiences.
 
+```
 Wearwell-release/
 │
 ├── Information sheet.pdf         # Participant info sheet for testing
@@ -42,6 +43,7 @@ Wearwell-release/
 │   └── pwa_files/                # Progressive Web App setup files
 │
 └── README.md                     # This file
+```
 
 🧩 How to Run the Prototype
 Option 1 — Run with Live Server (Recommended for Beginners)
