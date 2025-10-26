@@ -2,8 +2,8 @@
 🏃‍♀️ WearWell — Running Buddy App
 📘 Project Overview
 
-WearWell is a web-based prototype that helps users find running partners, track shared goals, and stay motivated through social support and wearable integration.
-This project was developed as part of the DECO3500 – Social & Mobile Computing course at The University of Queensland.
+WearWell is a web-based prototype designed to help users find running partners, track shared goals, and stay motivated through social support and wearable integration.
+This project was designed for DECO3500 – Social & Mobile Computing course at The University of Queensland.
 
 ## Research and Requirements Summary
 
@@ -13,13 +13,13 @@ This project was developed as part of the DECO3500 – Social & Mobile Computing
 
 Key Functions:
 
-- Find Nearby Runners — Find running partners near you based on location, pace, and fitness level.
+- Find Nearby Runners — Find running partners near you based on location, pace, and running level.
 
-- Shared Goals — Set and track mutual goals with your partner, viewing both individual and shared progress in real time.
+- Shared Goals — Set and track shared goals with your running partner, viewing both individual and shared common progress in real time.
 
-- Real-Time Tracking — Monitor workout performance through synced wearable data for instant feedback and motivation.
+- Real-Time Tracking — Get instant feedback through synced wearable devices and stayed motivated
 
-This prototype illustrates how social and mobile technologies can foster motivation, accountability, and community engagement in everyday fitness experiences.
+This prototype demostrates how social and mobile technologies can enhance individuals' motivation, engagment and workout habbits.
 
 ```
 Wearwell-release/
