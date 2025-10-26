@@ -65,3 +65,6 @@ Then visit
 👉 http://localhost:8080
 
 or on your phone (same WiFi): http://[your-IP-address]:8080.
+
+### Testing and Improvement
+Through usability testing of the Running Buddy prototype, we discovered that users struggled with setting their running level, understanding the matching logic, and confirming run appointments. To address these issues, the team optimized the level description cards, added location coordinates, and implemented a quick run appointment feature within the chat interface. These improvements significantly improved operational clarity and matching efficiency, bringing the app closer to real-world user needs.
