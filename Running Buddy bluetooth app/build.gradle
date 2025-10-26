@@ -1,0 +1,23 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    // 补上仓库，否则 classpath 里的 safeargs 插件可能解析不到
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // 与 app 里的 Navigation 运行时版本保持一致（建议 2.6.0）
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.6.0"
+    }
+}
+
+plugins {
+    id 'com.android.application' version '7.4.2' apply false
+    id 'com.android.library'     version '7.4.2' apply false
+}
+
+// 可保留清理任务
+tasks.register('clean', Delete) {
+    delete rootProject.buildDir
+}

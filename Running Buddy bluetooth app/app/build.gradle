@@ -1,0 +1,74 @@
+plugins {
+    id 'com.android.application'
+    id 'androidx.navigation.safeargs'
+}
+
+android {
+    namespace "com.example.bluetooth_869_10N_EN"
+
+    // 与你已安装的 SDK 平台一致：建议 33（也可用 31；不要用 36）
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.example.bluetooth_869_10N_EN"
+        minSdk 21
+        targetSdk 34
+
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('android.jks')
+            storePassword 'android'
+            keyAlias 'key0'
+            keyPassword 'android'
+        }
+    }
+
+    buildTypes {
+        debug {
+            // 调试包不混淆，便于排查
+            minifyEnabled false
+        }
+        release {
+            minifyEnabled true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // 你当前用 JDK 17，保持一致
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+
+    // 明确写出 Navigation 版本，避免 $nav_version 未定义
+    implementation "androidx.navigation:navigation-fragment:2.6.0"
+    implementation "androidx.navigation:navigation-ui:2.6.0"
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation "com.kongzue.dialogx:DialogX:0.0.49"
+    implementation 'com.github.michaellee123:LiveEventBus:1.8.14'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
+}
