@@ -5,6 +5,12 @@
 WearWell is a web-based prototype that helps users find running partners, track shared goals, and stay motivated through social support and wearable integration.
 This project was developed as part of the DECO3500 – Social & Mobile Computing course at The University of Queensland.
 
+## Research and Requirements Summary
+
+- People who exercise alone often lose motivation and struggle to maintain consistent routines over time.  
+- Building social connections and shared accountability can significantly increase long-term exercise engagement.
+
+
 Key Functions:
 
 - Find Nearby Runners — Find running partners near you based on location, pace, and fitness level.
